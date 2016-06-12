@@ -1,0 +1,63 @@
+.left-logo{
+	margin-top:-5px;
+	margin-left:-10px;
+	width: 180px;
+	height:35px;
+}
+
+.center{
+	text-align: center !important;
+}
+
+.ng-binding{
+	cursor: pointer !important;
+}
+
+a[ng-click]{
+	cursor: pointer;
+}
+
+/* require field */
+.form-group.required .control-label:after{
+  content:"*";
+  color:red;
+}
+
+/* profile picture */
+.profile-photo{
+	width: 120px;
+	height: 120px;
+	background-color: #00a65a;
+	border: 1px solid #999;
+	/* border-radius:100%; */
+	-webkit-border-radius: 50em;
+	-moz-border-radius: 50em;
+	border-radius: 50em;
+	cursor: pointer;	
+}
+
+
+/* select2 */
+.select2{
+	min-width: 100%;
+	display: block;
+}
+
+.input-group{
+	margin-right: 5px;
+}
+
+.input-group select, .input-group input{
+	border-color: #00a65a;
+}
+
+.input-group .input-group-addon{
+	background: #00a65a !important;
+	border-color: #00a65a;
+	color: #fff !important;
+}
+
+.box-preview{
+	min-width: 100% !important;
+	min-height: 100% !important;
+}

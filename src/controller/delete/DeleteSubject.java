@@ -1,0 +1,84 @@
+package controller.delete;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class DeleteSubject
+ */
+@WebServlet("/admin/deleteSubject.hrd")
+public class DeleteSubject extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public DeleteSubject() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		try {
+			doProcess(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		try {
+			doProcess(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Create method doProcess type boolean for delete record Subject. Create
+	 * variable id type of Integer throw into ModelDelete _ for excuteQuery
+	 * Delete Record Subject from db.
+	 * 
+	 * @return "true" if delete successful, else return "false" unsuccessful.
+	 * @throws IOException
+	 */
+
+	public void doProcess(HttpServletRequest request,
+			HttpServletResponse response) throws ClassNotFoundException,
+			SQLException, ParseException, IOException {
+		try {
+			int id = Integer.parseInt(request.getParameter("sub_id"));
+			if (new model.delete.deleteSubject().deleteSubjectRecord(id)) {
+				response.getWriter().write("Success");
+				return;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		response.getWriter().write("Fail");
+
+	}
+
+}

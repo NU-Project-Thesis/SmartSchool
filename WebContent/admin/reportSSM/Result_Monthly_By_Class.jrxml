@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Result_Monthly_By_Class" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1bf5b4c-4adb-4a04-9815-884ba933dd4d">
+	<property name="ireport.zoom" value="1.94871710000003"/>
+	<property name="ireport.x" value="334"/>
+	<property name="ireport.y" value="74"/>
+	<parameter name="DateOfResult" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FilePath" class="java.lang.String"/>
+	<parameter name="_classId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT rank() over (order by (RS.Total_score) DESC) as rank, RS.* FROM (
+	SELECT DISTINCT
+		concat (
+		to_char(tbg.start_date, 'YYYY'),
+		'-',
+		to_char(
+			tbg.end_date + INTERVAL '1 year',
+			'YYYY'
+		)
+		) AS academic_year,
+		tbg.gen_name,
+		initcap(tbs.first_name||' '||tbs.last_name) AS Fullname,
+		tbs.gender,
+		tbcla.class_id as class_id,
+		substr(tbcla.class_name,0,4) as class_name,
+		to_char(Tweb.web, '99.99') AS Web,
+		to_char(TJava.java, '99.99') AS Java,
+		to_char(Tkorean.korea, '99.99') AS korea,
+		TAtt.Total_att,
+		to_char(
+			(
+				case when Tweb.web is null then 0 else Tweb.web end +
+				case when TJava.java is null then 0 else TJava.java end +
+				case when Tkorean.korea is null then 0 else Tkorean.korea end+
+				case when TAtt.Total_att is null then 10 else TAtt.Total_att end
+			),
+			'99.99'
+		) AS Total_score,
+			to_char(now(),'dd Month YYYY')as make_at,
+			to_char(Tweb.date_sc,'Month') as Monthly
+	FROM
+		tbstudent tbs
+	INNER JOIN tbstudentenroll tbstu_en ON tbs.stu_id = tbstu_en.stu_id
+	INNER JOIN tbscore tbsc ON tbs.stu_id = tbsc.stu_id
+	INNER JOIN tbclass tbcla ON tbcla.class_id = tbstu_en.class_id
+	INNER JOIN tbcourse tbcou ON tbcla.cou_id = tbcou.cou_id
+	INNER JOIN tbgeneration tbg ON tbg.gen_id = tbcou.gen_id
+	LEFT JOIN (
+		SELECT
+			tbsq.stu_id AS stu_id,tbsc.score_date as date_sc,
+			(tbsc.score * 0.25) AS web
+		FROM
+			tbstudent tbsq
+		INNER JOIN tbscore tbsc ON tbsq.stu_id = tbsc.stu_id
+		WHERE
+			to_char(tbsc.score_date, 'YYYY-MM') = $P{DateOfResult}
+		AND tbsc.sub_id = 1005
+	) AS Tweb ON Tweb.stu_id = tbsc.stu_id
+	LEFT JOIN (
+		SELECT
+			tbsq.stu_id AS stu_id,
+			(tbsc.score * 0.35) AS java
+		FROM
+			tbstudent tbsq
+		INNER JOIN tbscore tbsc ON tbsq.stu_id = tbsc.stu_id
+		WHERE
+			to_char(tbsc.score_date, 'YYYY-MM') = $P{DateOfResult}
+		AND tbsc.sub_id = 1004
+	) AS TJava ON TJava.stu_id = tbsc.stu_id
+	LEFT JOIN (
+		SELECT
+			tbsq.stu_id AS stu_id,
+			(tbsc.score * 0.30) AS korea
+		FROM
+			tbstudent tbsq
+		INNER JOIN tbscore tbsc ON tbsq.stu_id = tbsc.stu_id
+		WHERE
+			to_char(tbsc.score_date, 'YYYY-MM') = $P{DateOfResult}
+		AND tbsc.sub_id = 1006
+	) AS Tkorean ON Tkorean.stu_id = tbsc.stu_id
+	LEFT JOIN (
+		SELECT
+			S.stu_id AS stu_id,
+			10 - (
+				case when TA.No_Permission is null then 0 else TA.No_Permission end+
+				case when TP.Permission is null then 0 else TP.Permission end+
+				case when TL.Late is null then 0 else TL.Late end
+			) AS Total_att
+		FROM
+			(
+				SELECT DISTINCT
+					stu_id
+				FROM
+					tbattendance
+				WHERE
+					to_char(att_date, 'YYYY-MM') = $P{DateOfResult}
+			) S
+		LEFT JOIN (
+			SELECT
+				stu_id,
+				COUNT (stu_id) AS No_Permission
+			FROM
+				tbattendance
+			WHERE
+				description = 'No Permission'
+			AND to_char(att_date, 'YYYY-MM') = $P{DateOfResult}
+			GROUP BY
+				stu_id
+		) AS TA ON S.stu_id = TA.stu_id
+		LEFT JOIN (
+			SELECT
+				stu_id,
+				COUNT (stu_id) * 0.50 AS Permission
+			FROM
+				tbattendance
+			WHERE
+				description = 'Permission'
+			AND to_char(att_date, 'YYYY-MM') = $P{DateOfResult}
+			GROUP BY
+				stu_id
+		) AS TP ON TP.stu_id = S.stu_id
+		LEFT JOIN (
+			SELECT
+				stu_id,
+				COUNT (stu_id) * 0.25 AS Late
+			FROM
+				tbattendance
+			WHERE
+				description = 'Late'
+			AND to_char(att_date, 'YYYY-MM') = $P{DateOfResult}
+			GROUP BY
+				stu_id
+		) AS TL ON TL.stu_id = S.stu_id
+
+	) AS TAtt ON TAtt.stu_id = tbsc.stu_id ) as RS
+
+where class_id=$P{_classId}]]>
+	</queryString>
+	<field name="rank" class="java.lang.Long"/>
+	<field name="academic_year" class="java.lang.String"/>
+	<field name="gen_name" class="java.lang.String"/>
+	<field name="fullname" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="class_name" class="java.lang.String"/>
+	<field name="web" class="java.lang.String"/>
+	<field name="java" class="java.lang.String"/>
+	<field name="korea" class="java.lang.String"/>
+	<field name="total_att" class="java.math.BigDecimal"/>
+	<field name="total_score" class="java.lang.String"/>
+	<field name="make_at" class="java.lang.String"/>
+	<field name="monthly" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="117">
+			<staticText>
+				<reportElement x="202" y="0" width="175" height="20" uuid="3c70eee2-91a9-4274-bd78-cc74bee8b837"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Korean Software HRD Center]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="186" y="19" width="204" height="20" uuid="5d8c765d-68eb-4bc4-a756-5697b95e0a70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["List of the "+$F{gen_name}+" of ITE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="39" width="204" height="20" uuid="73259520-69b0-4918-8fa4-c1fe57f9cf71"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Academic Year: "+$F{academic_year}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="158" y="59" width="261" height="20" uuid="ef5f3d83-a30c-41ab-9e8f-e5caf26ac075"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Official Monthly Test Result of "+$F{monthly}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="79" width="261" height="20" uuid="36fc7e93-2c83-4f47-9ebf-b5c4e9826012"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Class: "+$F{class_name}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="45" y="1" width="40" height="38" uuid="a0d95182-53aa-44d2-8882-d9692ab358c5"/>
+				<imageExpression><![CDATA[$P{FilePath}+"\\kshrd.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="32" y="39" width="96" height="15" uuid="2eb1313b-1961-4e24-9c13-e7c279df8b73"/>
+				<imageExpression><![CDATA[$P{FilePath}+"\\word.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="278" y="2" width="39" height="20" uuid="b8337aaa-e92a-445e-b156-5f134e2c2b52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gender]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="74" y="2" width="35" height="20" uuid="8668f29c-5de3-4a43-8e1b-0fc05b30e20d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rank]]></text>
+			</staticText>
+			<line>
+				<reportElement x="72" y="21" width="433" height="1" uuid="d2544eff-2a9b-46c7-a0be-bc4fb6218f35"/>
+			</line>
+			<line>
+				<reportElement x="317" y="2" width="1" height="19" uuid="47e36706-1a09-4b6e-8f17-d17561666ddf"/>
+			</line>
+			<staticText>
+				<reportElement x="316" y="2" width="45" height="20" uuid="1b180025-6afe-4d41-96d2-e114025de2b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Class]]></text>
+			</staticText>
+			<line>
+				<reportElement x="72" y="2" width="433" height="1" uuid="d5c7ee9c-8035-4494-ad0d-e81877668289"/>
+			</line>
+			<line>
+				<reportElement x="361" y="2" width="1" height="19" uuid="586b3a81-039f-46f5-8118-665a701f0b8d"/>
+			</line>
+			<line>
+				<reportElement x="278" y="2" width="1" height="19" uuid="59e4845f-5fa7-46e0-acf1-3ca651303c6b"/>
+			</line>
+			<line>
+				<reportElement x="72" y="2" width="1" height="19" uuid="876aba2c-fd7c-4506-a2bd-0b5962aabf16"/>
+			</line>
+			<staticText>
+				<reportElement x="110" y="2" width="168" height="20" uuid="9b875372-9854-483d-8729-e0487dc35d63"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[English Name]]></text>
+			</staticText>
+			<line>
+				<reportElement x="109" y="3" width="1" height="19" uuid="ee0e6326-a000-4541-87ee-8248e73aee03"/>
+			</line>
+			<line>
+				<reportElement x="504" y="3" width="1" height="19" uuid="a2baa34c-003b-4593-833b-f312ba5da6b4"/>
+			</line>
+			<staticText>
+				<reportElement x="362" y="2" width="142" height="20" uuid="a12e463f-abac-494c-8735-356fd9562fd8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Score]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<line>
+				<reportElement x="317" y="-3" width="1" height="19" uuid="d44237c0-0c7c-4c0a-939f-844f933d8208"/>
+			</line>
+			<line>
+				<reportElement x="72" y="16" width="433" height="1" uuid="e1a83e38-52cd-44e7-92e4-1a3d47ff590d"/>
+			</line>
+			<line>
+				<reportElement x="361" y="-3" width="1" height="19" uuid="7724affa-6db3-400d-a26d-439d5074205c"/>
+			</line>
+			<line>
+				<reportElement x="278" y="-3" width="1" height="19" uuid="05f7132d-7a2c-486d-82dc-4d8b79d79470"/>
+			</line>
+			<line>
+				<reportElement x="72" y="-3" width="1" height="19" uuid="0c6e285d-0e10-4f66-b270-dfb62ac1bc15"/>
+			</line>
+			<line>
+				<reportElement x="109" y="-2" width="1" height="19" uuid="653559fe-2b54-4253-9882-adbf842fbca2"/>
+			</line>
+			<line>
+				<reportElement x="504" y="-2" width="1" height="19" uuid="70302058-9799-4eed-ab99-6dc8e59518e2"/>
+			</line>
+			<textField>
+				<reportElement x="116" y="-1" width="100" height="16" uuid="1cf19b66-52d9-4a4e-9648-613d8faf8e92"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="-1" width="35" height="16" uuid="6c2b2eab-c879-44f1-a0dd-f04bf9aa3569"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rank}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="0" width="37" height="15" uuid="3249e0b5-4d6c-4f74-a639-7ef3bc378001"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="318" y="0" width="43" height="15" uuid="15b6c09e-6a38-40c7-90dd-9fd92bc45dec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{class_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="361" y="-1" width="142" height="15" uuid="a95281d3-e457-448c-9fc6-b1f4e881b511"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_score}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="300" y="6" width="204" height="20" uuid="37608484-a943-47eb-86bc-b823cc83ded6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Phonm Penh Date, "+$F{make_at}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

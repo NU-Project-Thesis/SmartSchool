@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transcript" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6489f9b3-0595-43aa-ab43-06e78264c4ea">
+	<property name="ireport.zoom" value="1.2418426461183147"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="240"/>
+	<property name="ireport.callouts" value="##Sat Aug 08 01:59:40 PDT 2015"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="dataset1" uuid="8b072dca-f614-42e6-b1e2-f17911ca650a">
+		<parameter name="stu_id" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT
+		tbr.rank_lower||'-'||tbr.rank_top AS rank,
+		tbr.detail_grade,
+		tbr.grade
+FROM
+	tbgeneration tbg
+		INNER JOIN tbcourse tbc ON tbg.gen_id=tbc.gen_id
+		INNER JOIN tbclass tbcl ON tbc.cou_id=tbcl.cou_id
+		INNER JOIN tbstudentenroll tbstuEn ON tbcl.class_id =tbstuEn.class_id
+		INNER JOIN tbstudent tbs ON tbstuEn.stu_id=tbs.stu_id
+		INNER JOIN tbrule tbr ON tbc.cou_id=tbr.cou_id
+	where tbs.stu_id=$P{stu_id}]]>
+		</queryString>
+		<field name="rank" class="java.lang.String"/>
+		<field name="detail_grade" class="java.lang.String"/>
+		<field name="grade" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="stu_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\soklu_000\\Desktop\\reportSSM\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagePath" class="java.lang.String"/>
+	<parameter name="filePath" class="java.lang.String"/>
+	<parameter name="cou_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	tbc.class_id AS cid,
+	st.first_name || ' ' || st.last_name AS Fullname,
+	tbc.class_name,
+	CASE
+WHEN st.gender = 'M' THEN
+	'Male'
+ELSE
+	'Female'
+END AS Sex,
+ to_char(st.dob, 'Month dd , YYYY') AS Date_of_birth,
+ st.address,
+ st.race AS nationality,
+ concat (
+	to_char(tbcou.start_date, 'YYYY'),
+	' - ',
+	to_char(
+		tbcou.end_date + INTERVAL '1 year',
+		'YYYY'
+	)
+) AS academic_year,
+ to_char(
+	tbcou.end_date,
+	'Month DD, YYYY'
+) AS Make_at,
+ st.photo,
+ tbcou.cou_name,
+ tbcou.cou_id,
+ su.sub_name,
+ to_char(
+	SUM (sc.score) / COUNT (sc.stu_id),
+	'999.99'
+) AS TotalScore,
+ (
+	SELECT
+		grade
+	FROM
+		tbrule
+	WHERE
+		floor(SUM (sc.score) / COUNT (sc.stu_id)) BETWEEN rank_lower
+	AND rank_top
+	AND cou_id = tbcou.cou_id
+) AS grade,
+ (
+	SELECT
+		SUM (TotalScore_in)
+	FROM
+		(
+			SELECT
+				tbcou.cou_id,
+				su.sub_name,
+				SUM (sc.score) / COUNT (sc.stu_id) AS TotalScore_in
+
+			FROM
+				tbstudent st
+			INNER JOIN tbscore sc ON st.stu_id = sc.stu_id
+			INNER JOIN tbsubject su ON sc.sub_id = su.sub_id
+			INNER JOIN tbclassenroll tbclEn ON su.sub_id = tbclEn.sub_id
+			INNER JOIN tbclass tbc ON tbclEn.class_id = tbc.class_id
+			INNER JOIN tbcourse tbcou ON tbc.cou_id = tbcou.cou_id
+			INNER JOIN tbgeneration tbg ON tbcou.gen_id = tbg.gen_id
+			inner JOIN tbstudentenroll tbs_en on st.stu_id= tbs_en.stu_id
+
+			WHERE
+				st.stu_id =$P{stu_id} and tbcou.cou_id=$P{cou_id}
+
+			GROUP BY
+				su.sub_name,
+				tbcou.cou_id
+		) AS A
+) / (
+	SELECT
+		COUNT (su.sub_name)
+	FROM
+		tbsubject su
+	INNER JOIN tbclassenroll tbclEn ON su.sub_id = tbclEn.sub_id
+	INNER JOIN tbclass tbcla ON tbclEn.class_id = tbcla.class_id
+	INNER JOIN tbcourse tbcou ON tbcla.cou_id = tbcou.cou_id
+	INNER JOIN tbgeneration tbg ON tbcou.gen_id = tbg.gen_id
+
+	WHERE
+		tbcla.class_id = tbc.class_id
+) AS total,
+ (
+	SELECT
+		grade
+	FROM
+		tbrule
+	WHERE
+		floor((
+			SELECT
+				SUM (TotalScore)
+			FROM
+				(
+					SELECT
+						tbcou.cou_id,
+						su.sub_name,
+						SUM (sc.score) / COUNT (sc.stu_id) AS TotalScore
+					FROM
+						tbstudent st
+					INNER JOIN tbscore sc ON st.stu_id = sc.stu_id
+					INNER JOIN tbsubject su ON sc.sub_id = su.sub_id
+					INNER JOIN tbclassenroll tbclEn ON su.sub_id = tbclEn.sub_id
+					INNER JOIN tbclass tbc ON tbclEn.class_id = tbc.class_id
+					INNER JOIN tbcourse tbcou ON tbc.cou_id = tbcou.cou_id
+					INNER JOIN tbgeneration tbg ON tbcou.gen_id = tbg.gen_id
+					inner JOIN tbstudentenroll tbs_en on st.stu_id= tbs_en.stu_id
+
+					WHERE
+						st.stu_id = $P{stu_id} and tbcou.cou_id=$P{cou_id}
+					GROUP BY
+						su.sub_name,
+						tbcou.cou_id
+				) AS A
+		) / (
+			SELECT
+				COUNT (su.sub_name)
+			FROM
+				tbsubject su
+			INNER JOIN tbclassenroll tbclEn ON su.sub_id = tbclEn.sub_id
+			INNER JOIN tbclass tbcla ON tbclEn.class_id = tbcla.class_id
+			INNER JOIN tbcourse tbcou ON tbcla.cou_id = tbcou.cou_id
+			INNER JOIN tbgeneration tbg ON tbcou.gen_id = tbg.gen_id
+			WHERE
+				tbcla.class_id = tbc.class_id
+		)) BETWEEN rank_lower
+	AND rank_top
+	AND cou_id = tbcou.cou_id
+) AS totalgrade
+FROM
+	tbstudent st
+INNER JOIN tbscore sc ON st.stu_id = sc.stu_id
+INNER JOIN tbsubject su ON sc.sub_id = su.sub_id
+INNER JOIN tbclassenroll tbclEn ON su.sub_id = tbclEn.sub_id
+INNER JOIN tbclass tbc ON tbclEn.class_id = tbc.class_id
+INNER JOIN tbcourse tbcou ON tbc.cou_id = tbcou.cou_id
+INNER JOIN tbgeneration tbg ON tbcou.gen_id = tbg.gen_id
+inner JOIN tbstudentenroll tbs_en on st.stu_id= tbs_en.stu_id
+WHERE
+	st.stu_id =$P{stu_id} and tbcou.cou_id=$P{cou_id} and
+	tbc.class_id=(select tbc.class_id
+		from tbstudent tbs
+		INNER JOIN tbstudentenroll tbs_en ON tbs.stu_id=tbs_en.stu_id
+		INNER JOIN tbclass tbc ON tbs_en.class_id = tbc.class_id
+		INNER JOIN tbcourse tbcou ON tbc.cou_id = tbcou.cou_id
+		INNER JOIN tbgeneration tbg ON tbcou.gen_id = tbg.gen_id
+		where tbs.stu_id=$P{stu_id} and tbcou.cou_id=$P{cou_id}
+	)
+GROUP BY
+	st.last_name,
+	su.sub_name,
+	tbcou.cou_name,
+	Fullname,
+	Sex,
+	Date_of_birth,
+	st.address,
+	nationality,
+	academic_year,
+	Make_at,
+	st.photo,
+	tbcou.cou_id,
+	tbc.class_id,
+	tbc.class_name]]>
+	</queryString>
+	<field name="cid" class="java.lang.Integer"/>
+	<field name="fullname" class="java.lang.String"/>
+	<field name="class_name" class="java.lang.String"/>
+	<field name="sex" class="java.lang.String"/>
+	<field name="date_of_birth" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="nationality" class="java.lang.String"/>
+	<field name="academic_year" class="java.lang.String"/>
+	<field name="make_at" class="java.lang.String"/>
+	<field name="photo" class="java.lang.String"/>
+	<field name="cou_name" class="java.lang.String"/>
+	<field name="cou_id" class="java.lang.Integer"/>
+	<field name="sub_name" class="java.lang.String"/>
+	<field name="totalscore" class="java.lang.String"/>
+	<field name="grade" class="java.lang.String"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="totalgrade" class="java.lang.String"/>
+	<background>
+		<band height="802">
+			<line>
+				<reportElement x="0" y="134" width="555" height="1" uuid="5dbe7c4a-6096-4d23-8bc0-c54a1a2458f0"/>
+				<graphicElement>
+					<pen lineWidth="1.25"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="134" width="1" height="603" uuid="20ba2ea4-10cc-47ca-868b-8a84272784df"/>
+				<graphicElement>
+					<pen lineWidth="1.25"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="554" y="134" width="1" height="604" uuid="97857b13-de24-4de4-bb86-a9cfeef5f6fd"/>
+				<graphicElement>
+					<pen lineWidth="1.25"/>
+				</graphicElement>
+			</line>
+			<image>
+				<reportElement x="41" y="184" width="472" height="467" uuid="9739390d-6829-42e2-b970-663f6ed25ab7"/>
+				<imageExpression><![CDATA[$P{filePath}+"\\back-kshrd.jpg"]]></imageExpression>
+			</image>
+			<subreport>
+				<reportElement x="359" y="495" width="181" height="77" uuid="55b104ea-8e3a-499f-950f-df15a6777a9f"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="stu_id">
+					<subreportParameterExpression><![CDATA[$P{stu_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{filePath}+"\\transcript_subreport2.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement x="-1" y="737" width="555" height="1" uuid="80e3ebd6-6135-482d-99e9-1e5830aee26e"/>
+				<graphicElement>
+					<pen lineWidth="1.25"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="177" y="604" width="100" height="20" uuid="b957f430-6a78-48b1-898e-778df8baf927"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Phnom Penh,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="255" y="604" width="100" height="20" uuid="0168d8db-10fc-4e12-9998-4813f791e0bb"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{make_at}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="258" y="622" width="100" height="20" uuid="f2c67ba4-a394-488b-9986-ea34cd1a46bb"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Director]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="742" width="556" height="1" uuid="5f153656-8432-46ee-aa11-f53c90f564c7"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="105" y="744" width="367" height="20" uuid="50ed096b-242e-490e-a0ea-456c5e6da77c"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[#12, St 323, Boeung Kak IICommune, Toul Kork District, Phonm Penh, Cambodia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="758" width="198" height="20" uuid="19150d01-55f6-49e3-895b-e3a8ecea5537"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Tel:(855) 23-991-314, Fax(855) 23-991-415]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="771" width="141" height="20" uuid="2c829b15-2d64-45af-b1aa-769dc299586b"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[E-mail: info.kshrd@gmail.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="773" width="253" height="25" uuid="d3192928-7230-40c9-8291-93f89259f93c"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[www.kshrd.com.kh, www.facebook.com/ksignhrd]]></text>
+			</staticText>
+		</band>
+	</background>
+	<title>
+		<band height="376" splitType="Stretch">
+			<image>
+				<reportElement x="240" y="0" width="82" height="76" uuid="6576a056-f0ad-4ca9-b2fc-92754dcb9f8d"/>
+				<imageExpression><![CDATA[$P{filePath}+"\\kshrd.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="196" y="75" width="406" height="35" uuid="f850b148-2344-42fc-af14-a10bcca1c983"/>
+				<imageExpression><![CDATA[$P{filePath}+"\\word.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="81" y="129" width="390" height="43" uuid="449f503a-4162-460f-b5e6-35794b2e8063"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Office of Admissions and Records]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="152" width="390" height="43" uuid="ebee51da-9f9b-46ca-bf7c-bac28d33364a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="16" isBold="false"/>
+				</textElement>
+				<text><![CDATA[OFFICIAL TRANSCRIPT]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="152" y="216" width="100" height="19" uuid="278fc8c5-4802-4fc4-84f6-b34af1347a76"/>
+				<textElement>
+					<font fontName="Serif" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="216" width="39" height="20" uuid="e4fe414c-1420-495b-b4d1-70e083e3fc68"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="236" width="39" height="19" uuid="50ecea42-3401-4b5b-a101-d0de08e2c2db"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Sex]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="152" y="236" width="100" height="20" uuid="e36386df-28de-4edd-87b7-97a812cd7bf1"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sex}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="126" y="217" width="4" height="20" uuid="44ee0261-978b-4efe-88b6-58231dab4fb9"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="126" y="236" width="4" height="20" uuid="5bb5540c-0530-4007-a7af-62c30206f5d0"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="256" width="75" height="19" uuid="5e3befed-4881-46db-8d83-4fa33b847d1c"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Date of Birth]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="276" width="4" height="20" uuid="cc96c44a-db6d-44e7-a797-b5fa235a94f6"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="152" y="255" width="172" height="20" uuid="8aa13cdc-b95f-44a8-add1-77ac0a12b6b2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_of_birth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="275" width="99" height="19" uuid="89f99690-a8e4-4d99-ae3c-9ac77c436669"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Place of Birth]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="152" y="275" width="140" height="20" uuid="5d5cfe2e-11d9-4699-ac15-63b45873e481"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="297" width="99" height="19" uuid="a51802ce-bc1d-4d55-a0a6-6c9ced07b7b1"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Nationality]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="296" width="4" height="20" uuid="b7716579-4ae4-4958-8a35-995a685d9398"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="152" y="296" width="100" height="20" uuid="f484f2c3-34aa-4557-b2f1-c361592d48ad"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nationality}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="127" y="255" width="4" height="20" uuid="e2e1f196-9df6-4665-ae34-bc14a67baccf"/>
+				<textElement>
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="31" y="351" width="486" height="1" uuid="8de32b5d-5821-4a9d-9bd6-f5ccb8a61c5d"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="31" y="351" width="1" height="25" uuid="e392991a-c6b5-48b2-9aa1-066945c152a7"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="43" y="350" width="89" height="24" uuid="fe71a6dc-8faf-4177-b266-717f673fc827"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Course]]></text>
+			</staticText>
+			<line>
+				<reportElement x="517" y="351" width="1" height="25" uuid="05fdd171-2f13-49c7-a9df-8e63678ed806"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="162" y="351" width="115" height="24" uuid="a2b59d4d-8613-48f5-b9c1-b7119e3dd834"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subjects]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="351" width="94" height="24" uuid="44dce476-4e36-4233-9453-f856effdcab9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Score]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="426" y="351" width="89" height="24" uuid="27bddb38-1236-4f30-bf05-19365ba642b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grade]]></text>
+			</staticText>
+			<line>
+				<reportElement x="32" y="374" width="485" height="1" uuid="75ec57c1-77cd-4b69-9a95-d95c81e83cec"/>
+			</line>
+			<line>
+				<reportElement x="144" y="352" width="1" height="24" uuid="e0b7b49e-69e3-4937-ab8e-5d3de6f608f6"/>
+			</line>
+			<line>
+				<reportElement x="303" y="351" width="1" height="23" uuid="b771ccbd-eefe-4127-9ed7-cf4e88dbd62f"/>
+			</line>
+			<line>
+				<reportElement x="425" y="352" width="1" height="23" uuid="ced977d7-3def-49fb-85e4-98c4e96c14dd"/>
+			</line>
+			<image scaleImage="FillFrame" hAlign="Center">
+				<reportElement x="439" y="195" width="94" height="107" uuid="e73ca592-52dc-45d2-8a3a-bb8b914b3011"/>
+				<imageExpression><![CDATA[$P{imagePath}+'\\'+$F{photo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="27" y="316" width="599" height="20" uuid="5c186471-d524-4db9-b812-914dc5a0a039"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["has successfully completed an IT Expert Training Course for the academic year " +$F{academic_year}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="27">
+			<line>
+				<reportElement x="31" y="-1" width="1" height="28" uuid="044a50c5-2101-411a-9d51-2448912343d8"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="517" y="-1" width="1" height="28" uuid="8aff7ece-9266-490a-90d1-266c3702fbf7"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="327" y="3" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="c751480f-b49e-4384-867c-6c286da3d023"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalscore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="3" width="100" height="20" uuid="eba51cf6-3b49-40e4-86f9-3bc37bc2a49e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grade}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="144" y="-2" width="1" height="28" uuid="18b72a22-086b-49fa-b414-b5b8d684a5f9"/>
+			</line>
+			<line>
+				<reportElement x="303" y="-2" width="1" height="28" uuid="d21c9333-95d3-4de1-a7b1-a0ec61fe83b5"/>
+			</line>
+			<line>
+				<reportElement x="425" y="-1" width="1" height="28" uuid="a569a7c7-df32-4c35-a61f-d3f12a7b15d9"/>
+			</line>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="167" y="3" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="1ee86f1c-c503-4eb2-b90a-7a36dc3f2576"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sub_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="55" y="3" width="100" height="20" uuid="3160477a-47d3-4459-8ac9-8201507c0863"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cou_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="22">
+			<line direction="BottomUp">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="32" y="-1" width="486" height="1" isPrintInFirstWholeBand="true" uuid="e453e210-a71f-4748-85a0-16cba7e2e4cb"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="31" y="0" width="1" height="21" uuid="57a5840d-e90f-4b95-a790-c6d1cf797e42"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="31" y="20" width="486" height="1" uuid="050ad8ce-8f4a-4c98-be3a-1481e1375d09"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="517" y="0" width="1" height="21" uuid="b48626e5-aeb0-4723-86dd-982f6b670669"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="180" y="-2" width="188" height="23" uuid="951218c7-d3a3-465e-a6f2-992910fd496c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[General Grade: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="367" y="1" width="100" height="20" uuid="99f31ef1-a89e-47b8-8ef2-a5acbda51999"/>
+				<textElement>
+					<font fontName="Serif" size="14" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalgrade}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

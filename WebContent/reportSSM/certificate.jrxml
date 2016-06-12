@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificate" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2fe97650-6b9b-43f9-adbf-983e32358b04">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="192"/>
+	<parameter name="stuId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="filePath" class="java.lang.String"/>
+	<parameter name="cou_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT initcap(tbs.first_name)||' '||initcap(tbs.last_name) as FullName,(CASE WHEN tbs.gender='M' THEN 'Mr. ' ELSE 'Mrs. ' END) as Gender,
+				tbg.gen_name,initcap(tbc.cou_name)as cou_id,Concat(to_char(tbc.start_date, 'Month dd , YYYY'),' to ',to_char(tbc.end_date, 'Month dd , YYYY')) as FromTo,to_char(tbc.end_date, 'Month dd , YYYY') as make_at
+FROM
+	tbgeneration tbg
+		INNER JOIN tbcourse tbc ON tbg.gen_id=tbc.gen_id
+		INNER JOIN tbclass tbcl ON tbc.cou_id=tbcl.cou_id
+		INNER JOIN tbstudentenroll tbstuEn ON tbcl.class_id =tbstuEn.class_id
+		INNER JOIN tbstudent tbs ON tbstuEn.stu_id=tbs.stu_id
+	where tbs.stu_id=$P{stuId} and tbc.cou_id=$P{cou_id}]]>
+	</queryString>
+	<field name="fullname" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="gen_name" class="java.lang.String"/>
+	<field name="cou_id" class="java.lang.String"/>
+	<field name="fromto" class="java.lang.String"/>
+	<field name="make_at" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="595" splitType="Stretch">
+			<image>
+				<reportElement x="11" y="6" width="839" height="583" uuid="0495ffdc-9092-484a-9888-1117c8ea015a"/>
+				<imageExpression><![CDATA[$P{filePath}+"\\Certificate_Fin.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="77" y="127" width="121" height="39" uuid="9e6ebf65-5bf1-4d4c-8d09-5cfedfad3025"/>
+				<imageExpression><![CDATA[$P{filePath}+"\\title.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="222" y="75" width="423" height="39" forecolor="#FF3333" uuid="7557e4fa-7aa4-419e-8c6f-4d99b1aea323"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICATE OF TRAINING]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="231" y="114" width="399" height="39" forecolor="#0D4F8D" uuid="da277f43-11e3-4e70-a701-08fa27018839"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KOREA SOFTWARE HRD CENTER]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="222" y="208" width="419" height="43" uuid="83d8bc1b-d651-4021-ab0d-8c12b80349b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gender}+$F{fullname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="163" y="289" width="216" height="39" forecolor="#000000" uuid="e8d34e32-84ae-44c4-b378-15eee32c16ac"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="295" y="297" width="387" height="25" uuid="1d36e9ae-3403-4825-9320-4c9216a4dc74"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fromto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="209" y="328" width="438" height="39" forecolor="#000000" uuid="77880b8f-59a1-4c6b-a469-f3264d3a7cab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(Full-time course comprising 500 hours including lecture,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="351" width="291" height="39" forecolor="#000000" uuid="d656f3a8-5ca1-42a0-89c5-d0cae2342637"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="false"/>
+				</textElement>
+				<text><![CDATA[lab research, lab practice and projects)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="383" width="291" height="39" forecolor="#000000" uuid="2cb0ac8e-5792-4834-af88-f32e38bec0a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Phnom Penh, ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="417" y="396" width="130" height="20" uuid="568a017e-c9b4-4a0e-9220-ab0bbcfc1859"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{make_at}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="371" y="400" width="120" height="39" forecolor="#000000" uuid="102e0577-ff9b-40cc-9700-144cdf26e186"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Director]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="471" width="120" height="39" forecolor="#000000" uuid="701b73a8-ca7a-404b-91ea-4bb4aa9ef8bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dr. Kim TeaKyung]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="251" width="702" height="50" uuid="841c64ce-3243-4c62-8fbd-88f12cbe0971"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA["has successfully completed "+ $F{gen_name} +" "+ $F{cou_id}+" Course of Software Experts"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" vAlign="Middle" isUsingCache="true">
+				<reportElement x="254" y="177" width="352" height="31" uuid="1a8f01f7-fdb2-42d0-a579-40c6e21678fa"/>
+				<imageExpression><![CDATA[$P{filePath}+"\\word_cert.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>
