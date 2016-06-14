@@ -13,7 +13,7 @@ public class ConnectionDB {
 		properties.put("password", "ymhLi7EbQgYC9rjNeLlp3CWQ_y");
 		properties.put("ssl", "true");
 		properties.put("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
-		
+		//TESting
 		Connection con = DriverManager.getConnection(dbURL, properties);
 		//Connection con = DriverManager.getConnection("jdbc:postgresql://ec2-54-83-59-154.compute-1.amazonaws.com:5432/d399q8qhkv0nni","icslkkbiwvowel","bwmQ3TR2Ai9I9wrmPfwzL2sSIj");
 		//Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hrd","postgres","7778");
