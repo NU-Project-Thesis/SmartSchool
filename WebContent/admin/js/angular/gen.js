@@ -194,8 +194,24 @@ app
 
 					/* save for insert and update */
 					$scope.save = function(e) {
-
+						console.log("abc");
+					var start_date=	$('#start_date').datepicker('getDate')*86400 * 1000;
+					var end_date = $('#end_date').datepicker('getDate')*86400 * 1000;
+				
+					if(start_date > end_date){
+						
+						swal(
+								"Try again!",
+								"Start date must be before enddate! ",
+								"error");
+						return false;
+						
+					}
+					
+					
+					
 						$("#spinner").show();
+					//	alert($("#start_date").val());
 						var data = {
 							'gen_id' : $scope.editid,
 							'gen_name' : $('#gen_name').val(),

@@ -1,4 +1,5 @@
 /*declare app*/
+
 var app = angular.module('courseApp', [ 'ui.bootstrap' ]);
 
 /* filter */
@@ -181,7 +182,12 @@ app.controller('courseCtrl', function($scope, $http, $timeout) {
 	};
 
 	$scope.save = function(e) {
+		//get value from start date and end dat in milli seconds for calculation
+		var start_date=	$('#start_date').datepicker('getDate')*86400 * 1000;
+		var end_date = $('#end_date').datepicker('getDate')*86400 * 1000;
+	     
 		$("#spinner").show();
+		console.log("abc");
 		var data = {
 			'cou_id' : $scope.editid,
 			'cou_name' : $scope.cou_name,
@@ -189,6 +195,19 @@ app.controller('courseCtrl', function($scope, $http, $timeout) {
 			'end_date' : $scope.end_date,
 			'gen_id' : $('#cGen').val()
 		};
+//		 alert(start_date);
+//	      
+//	      alert('fuq!');
+		//if start date is bigger than end , can not insert new course
+		if(start_date > end_date){
+			
+			swal(
+					"Try again!",
+					"Start date must be before enddate! ",
+					"error");
+			return false;
+			
+		}
 		if (e == true) { // insert gen
 			$.post("courseInsert.hrd", data).success(
 					function(data, status, headers) {

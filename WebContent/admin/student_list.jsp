@@ -91,7 +91,7 @@
 												<span class="glyphicon glyphicon-search"></span>
 											</div>
 											<input type="text" class="form-control" name="search"
-												id="search" ng-model="search" ng-change="filter()"
+												id="search" ng-model="search.$" ng-change="filter()"
 												placeholder="Search student...">
 										</div>
 										<!-- /.input group -->
@@ -141,7 +141,7 @@
 									</thead>
 									<tbody>
 										<tr
-											ng-repeat="data in filtered = (list | filter:{first_name:search} | orderBy : predicate :reverse) | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+											ng-repeat="data in filtered = (list|filter:search|orderBy : predicate :reverse)|startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
 											<td>{{data.stu_id}}</td>
 
 											<td><img class="avatar-frame"
@@ -239,7 +239,7 @@
 													</div>
 												</div>
 											</div>
-
+				
 											<!-- student name -->
 											<div class="row">
 												<div class="col-md-6">
@@ -247,7 +247,7 @@
 														<label class="control-label" for="first_name">First
 															Name</label> <input type="text" class="form-control"
 															name="first_name" id="first_name"
-															placeholder="First name" ng-model="first_name" />
+															placeholder="First name" ng-model="search.first_name" />
 													</div>
 												</div>
 												<div class="col-md-6">
@@ -255,7 +255,7 @@
 														<label class="control-label" for="last_name required">Last
 															Name</label> <input type="text" class="form-control"
 															name="last_name" id="last_name" placeholder="Last name"
-															ng-model="last_name" />
+															ng-model="search.last_name" />
 													</div>
 												</div>
 											</div>

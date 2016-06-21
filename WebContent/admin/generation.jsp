@@ -245,7 +245,12 @@
 		});
 		// initialize date picker
 		$("#start_date").datepicker();
-		$("#end_date").datepicker();
+		// set end date 1month after start date
+		 $('#start_date').change(function() {
+			 var date2 = $('#start_date').datepicker('getDate'); 
+			 date2.setDate(date2.getDate()+30); 
+			 $('#end_date').datepicker('setDate', date2);
+			});
 
 		$("#cou_start_date").datepicker();
 		$("#cou_end_date").datepicker();

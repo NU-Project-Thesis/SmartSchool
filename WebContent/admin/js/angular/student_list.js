@@ -1,6 +1,13 @@
 /*declare app*/
 var app = angular.module('studentApp', [ 'ui.bootstrap' ]);
-
+var app2 = angular.module('Myfilter', [])
+app.controller('MainController', function($scope) {
+    $scope.persons = [
+        {name: 'Peter krouch', age: 28, city: 'Berlin'},
+        {name: 'Malik lervinson', age: 23, city: 'London'},
+        {name: 'Malik lavender', age: 31, city: 'Paris'},
+    ];
+});
 /* filter */
 app.filter('startFrom', function() {
 	return function(input, start) {
@@ -10,6 +17,23 @@ app.filter('startFrom', function() {
 		}
 		return [];
 	};
+});
+app.filter('filterBy', function() {
+	   return function(array, query) {
+		    
+	        var parts = query && query.trim().split(/\s+/),
+	            keys = Object.keys(array[0]);
+	    
+	        if (!parts || !parts.length) return array;
+	    
+	        return array.filter(function(obj) {
+	            return parts.every(function(part) {
+	                return keys.some(function(key) {
+	                    return String(obj[key]).toLowerCase().indexOf(part.toLowerCase()) > -1;
+	                });
+	            });
+	        });
+	    };
 });
 
 /* app scope */
@@ -68,7 +92,9 @@ app
 					/* filter (search) */
 					$scope.filter = function() {
 						$timeout(function() {
+//							var fullname =$scope.list[x].first_name+$scope.list[x].last_name;
 							$scope.filteredItems = $scope.filtered.length;
+							
 						}, 10);
 					};
 					/* sort */
@@ -94,6 +120,8 @@ app
 							$('#id').val(id);
 							$('#first_name').val($scope.list[x].first_name);
 							$('#last_name').val($scope.list[x].last_name);
+						
+							
 							$('#img').attr('src',
 									'../image/student/' + $scope.list[x].photo);
 							$('#hide_img').val($scope.list[x].photo);

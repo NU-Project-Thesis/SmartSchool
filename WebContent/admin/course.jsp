@@ -271,6 +271,7 @@
 <!-- script -->
 <script type="text/javascript">
 	/* document ready */
+	//alert('course');
 	$(function() {
 		// collapse box on btn cancel clicked
 		$("#btncancel").click(function() {
@@ -282,7 +283,11 @@
 
 		// initialize date picker
 		$("#start_date").datepicker();
-		$("#end_date").datepicker();
+		 $('#start_date').change(function() {
+			 var date2 = $('#start_date').datepicker('getDate'); 
+			 date2.setDate(date2.getDate()+30); 
+			 $('#end_date').datepicker('setDate', date2);
+			});
 
 		$("#cou_start_date").datepicker();
 		$("#cou_end_date").datepicker();
