@@ -109,7 +109,7 @@ iframe {
 										<label class="control-label">Student</label> 
 										<select id="stu_id" class="form-control select2" multiple="multiple"
 											data-placeholder="Select students">
-											<option ng-repeat="stu in filtered = (student | orderBy:first_name)"
+											<option ng-repeat="stu in filtered = (student | filter:{gen_id:genFilter} | filter:{cou_id:courseFilter} | orderBy:first_name)"
 												value="{{stu.stu_id}}">{{stu.first_name}}
 												{{stu.last_name}}</option>
 										</select>
