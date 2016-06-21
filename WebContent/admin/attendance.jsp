@@ -277,6 +277,7 @@ iframe {
 		$(document)
 				.ready(
 						function() {
+						
 
 							$("#start_date").datepicker();
 							$("#end_date").datepicker();
@@ -438,10 +439,23 @@ iframe {
 							/*
 							* reset modal form on close
 							*/
-							$("#myModal").on("hidden.bs.modal", function(){
-								$(this).find("radio,input,select").val('').end();
-								
+							$("#myModal").on("hide.bs.modal", function(){
+								$(this).find("input,select").val('');
+							//	$(this).find(".flat-red").attr("checked","false");
+							//var modalForm=$(this).find('form')[0];
+							// modelForm.find('input[type=text], input[type=radio]').val('');
+						//	alert($(this).find('input[type=text]').val());
+							
+							
+								$(".iradio_flat-green").removeClass("checked");
+								//$("#stu_id").val('').end();
+								$("#stu_id").select2("val", "");
+							//  $(this).removeData('bs.modal');
+								alert('fuq');
+						
 							});
+							
+						
 
 						});
 	</script>
