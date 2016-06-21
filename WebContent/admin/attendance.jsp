@@ -106,11 +106,10 @@ iframe {
 									</div>
 
 									<div class="form-group required">
-										<label class="control-label">Student</label> <select
-											id="stu_id" class="form-control select2" multiple="multiple"
+										<label class="control-label">Student</label> 
+										<select id="stu_id" class="form-control select2" multiple="multiple"
 											data-placeholder="Select students">
-											<option
-												ng-repeat="stu in filtered = (student | orderBy:first_name)"
+											<option ng-repeat="stu in filtered = (student | orderBy:first_name)"
 												value="{{stu.stu_id}}">{{stu.first_name}}
 												{{stu.last_name}}</option>
 										</select>
@@ -381,6 +380,7 @@ iframe {
 															.date())
 														$scope.eventCal
 																.fullCalendar('unselect');
+													
 													openmodal.click();
 
 													// assign date to modal
@@ -420,7 +420,7 @@ iframe {
 
 												eventClick : function(calEvent,
 														jsEvent, view) {
-
+													
 													var id = calEvent.title
 															.split(' ');
 													/* delete attendance */
@@ -434,6 +434,14 @@ iframe {
 
 												}
 											});
+							
+							/*
+							* reset modal form on close
+							*/
+							$("#myModal").on("hidden.bs.modal", function(){
+								$(this).find("radio,input,select").val('').end();
+								
+							});
 
 						});
 	</script>
