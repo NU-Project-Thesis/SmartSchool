@@ -1,7 +1,10 @@
 package model.select;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import connection.ConnectionDB;
 
@@ -67,5 +70,23 @@ public class selectGeneration {
 		
 		if(con != null)
 			con.close();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean checkGeneration() throws SQLException {
+		sql = "select count(*) from tbgeneration where is_finish= 'f'";
+		st = con.createStatement();
+		rs = st.executeQuery(sql);
+		while (rs.next()) {
+			if (rs.getInt(1) > 0) {
+				return true;
+			}
+		}
+		return false;
+
 	}
 }

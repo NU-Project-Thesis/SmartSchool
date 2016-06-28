@@ -86,4 +86,22 @@ public class selectCourse {
 		if(con != null)
 			con.close();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean checkCourse() throws SQLException {
+		sql = "select count(*) from tbcourse where is_finish= 'f'";
+		st = con.createStatement();
+		rs = st.executeQuery(sql);
+		while (rs.next()) {
+			if (rs.getInt(1) > 0) {
+				return true;
+			}
+		}
+		return false;
+
+	}
 }
