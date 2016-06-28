@@ -217,6 +217,9 @@ app.controller('courseCtrl', function($scope, $http, $timeout) {
 							addForm.reset();
 							$("#btn-collapse").click();
 							$scope.loadData();
+						}else {
+							swal("Error!", "Can Only Course available",
+							"error");
 						}
 					});
 		} else { // update gen

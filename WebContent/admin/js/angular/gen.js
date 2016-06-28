@@ -235,6 +235,13 @@ app
 															.click();
 													$scope.loadData();
 													$("#spinner").hide();
+												}else {
+													swal(
+															"Error!",
+															"Can Only generation available",
+															"error");
+													$scope.loadData();
+													$("#spinner").hide();
 												}
 											});
 						} else { // update gen
