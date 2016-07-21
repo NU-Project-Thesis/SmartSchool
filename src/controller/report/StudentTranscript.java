@@ -62,14 +62,14 @@ public class StudentTranscript extends HttpServlet {
 		 
 		 String imagePath = request.getSession().getServletContext().getRealPath("image/student");
 		 param.put("imagePath", imagePath);
-		 System.out.println(imagePath);
+		 System.out.println("1KP " + imagePath + request.getSession().getServletContext().getRealPath("image/student"));
 		 
 		 String filePath=request.getSession().getServletContext().getRealPath("/reportSSM/");
 		 param.put("filePath",filePath);
-		 System.out.println(filePath);
+		 System.out.println("2KP " + filePath);
 		 
 		 String pathReport = request.getServletContext().getRealPath("/reportSSM/transcript.jrxml");
-		 System.out.println(pathReport);
+		 System.out.println("3KP " + pathReport);
 		 
 		 try {
 			Report.Process(response, param, pathReport);

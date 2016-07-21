@@ -266,15 +266,15 @@ LEFT JOIN (
 			<line>
 				<reportElement x="801" y="0" width="1" height="21" uuid="7538dd88-5476-468d-bff9-d52d5096c5c3"/>
 			</line>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="597" y="0" width="204" height="20" uuid="b546dc6e-a818-42a5-af0c-9eff1c8151e1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{late}==null ? " " : " "+$F{late})]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="161" y="0" width="218" height="20" uuid="8e8cef35-8ae2-4e46-b6c5-475ff6b4c6b3"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="161" y="0" width="218" height="20" uuid="8e8cef35-8ae2-4e46-b6c5-475ff6b4c6b3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -283,7 +283,7 @@ LEFT JOIN (
 			<line>
 				<reportElement x="379" y="-1" width="1" height="21" uuid="a02214bb-1f89-48a4-8e66-a84fbb290504"/>
 			</line>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="380" y="0" width="216" height="20" uuid="1271909d-156e-448c-8c6d-b9afc42aa8fe"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
