@@ -98,7 +98,7 @@
 														<label class="control-label">Gender</label>
 														<div class="form-inline">
 															<label> <input class="flat-red" type="radio"
-																name="gender" value="Male"> Male
+																name="gender"  aria-checked="true" checked="" value="Male"> Male
 															</label> &nbsp; <label> <input class="flat-red"
 																type="radio" name="gender" value="Female">
 																Female
@@ -120,7 +120,7 @@
 												<div class="col-md-6">
 													<div class="form-group required">
 														<label class="control-label" for="email">Email</label> <input
-															type="email" class="form-control" name="email" id="email"
+															type="email" class="form-control" name="email" id="email" 
 															placeholder="you@gmail.com">
 													</div>
 												</div>
@@ -162,9 +162,11 @@
 
 												<div class="col-md-4">
 													<div class="form-group">
-														<label for="social_id">Social ID</label> <input
+														<label for="social_id">Social ID</label>
+														 <input
 															type="text" class="form-control" name="social_id"
-															id="social_id" placeholder="Social id">
+															id="social_id" placeholder="Social id" data-inputmask="&quot;mask&quot;: &quot;999-999-999&quot;"
+															data-mask="">
 													</div>
 												</div>
 											</div>
@@ -185,7 +187,7 @@
 													</div>
 													<div class="form-group">
 														<label for="father_phone">Father's Phone</label> <input
-															type="text" class="form-control" name="father_phone"
+															type="text" disabled="true" class="form-control" name="father_phone"
 															id="father_phone" placeholder="Father phone"
 															data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;"
 															data-mask="" placeholder="012-345-6789">
@@ -202,15 +204,17 @@
 													<div class="form-group">
 														<label for="mother_phone">Mother's Phone</label> <input
 															type="text" class="form-control" name="mother_phone"
-															id="mother_phone" placeholder="Mother phone"
+															id="mother_phone" disabled="true" placeholder="Mother phone"
 															data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;"
 															data-mask="" placeholder="012-345-6789">
 													</div>
 												</div>
 											</div>
 
-											<button type="button" class="btn btn-primary pull-right"
+											<button type="submit" class="btn btn-primary pull-right"
 												id="add" onclick="insertStudent()">Add</button>
+<!-- 												<input type="submit" class="btn btn-primary pull-right" id="add" onclick="insertStudent()" value="Add"> -->
+												
 										</form>
 									</div>
 
@@ -248,7 +252,10 @@
 <!-- import script -->
 <%@ include file="include/script.jsp"%>
 <script>
+
+
 	$(function() {
+		checkdisableInput();
 		/* initialize date picker */
 		$("#dob").datepicker();
 
@@ -274,32 +281,126 @@
 		$("[data-mask]").inputmask();
 	});
 
+	function validateOnlyChar(inputs)
+	{
+	  
+		var patt = /^$|^[A-z]+$/;
+	//	alert(patt.test(patt));
+		return patt.test(inputs);
+	}
+	// validate email
+	function validateEmail(email) {
+	//	var pattern=/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/gi;
+		var patt = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+		
+		alert(patt.test(email));
+		return patt.test(email);
+	}
+	
+//check if father name and mother name is null or not, if null disabled father and mother phone
+	function checkdisableInput(){
+		var fathername =$('#father_name').val();
+	//	alert(fathername.length);
+		var mothername = $('#mother_name').val();
+		if(fathername.length>0){
+			$('#father_phone').removeAttr("disabled");
+		
+		}
+		else{
+			$('#father_phone').attr("disabled","true");
+			$('#father_phone').val("");
+		}
+		
+		if(mothername.length>0){
+			$('#mother_phone').removeAttr("disabled");
+		}
+		else{
+			$('#mother_phone').attr("disabled","true");
+			$('#mother_phone').val("");
+		}
+	}
+	// on blur
+	$('#father_name').blur(function(){
+		checkdisableInput();
+	})
+	$('#mother_name').blur(function(){
+		checkdisableInput();
+	})
+	
 	function insertStudent() {
 		var formData = new FormData($("#addForm")[0]);
-		$.ajax({
-			url : 'insertStudent.hrd',
-			type : 'POST',
-			data : formData,
-			async : false,
-			cache : false,
-			contentType : false,
-			processData : false,
-			success : function(data) {
-				if (data == 'Success') {
-					swal("Congratulation!", "New student has been added!",
-							"success");
-					$('#addForm')[0].reset();
-					// clear check from gender field
-					$('#M').removeAttr('checked');
-					$('#F').removeAttr('checked');
-					// set image to default
-					$('#img').attr('src', 'image/default-profile.png');
+		var email =$('#email').val();
+		var firstname= $('#first_name').val();
+		var lastname =$('#last_name').val();
+		var nation = $('#race').val();
+		var fathername =$('#father_name').val();
+		var mothername = $('#mother_name').val();
+		
+		if(!validateEmail(email)){
+			alert(validateEmail("abc@gmail.com"));
+			alert(email);
+			swal("Error!","Your email format is wrong!");
+		}
+		else if(!(validateOnlyChar(firstname)&&validateOnlyChar(lastname)
+				&&validateOnlyChar(nation)&&validateOnlyChar(fathername)&&validateOnlyChar(mothername))){
+			
+		
+			swal("Error!","Names and Nationality can not contain number!");
+		}
+		else{
+			$.ajax({
+				url : 'insertStudent.hrd',
+				type : 'POST',
+				data : formData,
+				async : false,
+				cache : false,
+				contentType : false,
+				processData : false,
+				success : function(data) {
+					if (data == 'Success') {
+						swal("Congratulation!", "New student has been added!",
+								"success");
+						//$('#addForm')[0].reset();
+						// clear check from gender field
+						//$('#M').removeAttr('checked');
+						//$('#F').removeAttr('checked');
+						// set image to default
+						//$('#img').attr('src', 'image/default-profile.png');
+					}
+					
+				},
+				error : function() {
+					swal("Error!", "Cannot add new student!", "error");
 				}
-			},
-			error : function() {
-				swal("Error!", "Cannot add new student!", "error");
-			}
-		});
+			});
+
+			
+		}
+// 		$.ajax({
+// 			url : 'insertStudent.hrd',
+// 			type : 'POST',
+// 			data : formData,
+// 			async : false,
+// 			cache : false,
+// 			contentType : false,
+// 			processData : false,
+// 			success : function(data) {
+// 				if (data == 'Success') {
+// 					swal("Congratulation!", "New student has been added!",
+// 							"success");
+// 				//	$('#addForm')[0].reset();
+// 					// clear check from gender field
+// 				//	$('#M').removeAttr('checked');
+// 					//$('#F').removeAttr('checked');
+// 					// set image to default
+// 					$('#img').attr('src', 'image/default-profile.png');
+// 				}
+				
+// 			},
+// 			error : function() {
+// 				swal("Error!", "Cannot add new student!", "error");
+// 			}
+// 		});
 
 	}
 
