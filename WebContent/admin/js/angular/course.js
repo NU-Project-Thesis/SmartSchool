@@ -197,7 +197,7 @@ app.controller('courseCtrl', function($scope, $http, $timeout) {
 		};
 //		 alert(start_date);
 //	      
-//	      alert('fuq!');
+
 		//if start date is bigger than end , can not insert new course
 		if(start_date > end_date){
 			

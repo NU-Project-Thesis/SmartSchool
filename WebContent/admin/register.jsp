@@ -7,7 +7,7 @@
 <!-- include script -->
 <%@ include file="include/head.jsp"%>
 </head>
-<body class="skin-green-light sidebar-mini fixed">
+<body class="skin-green-light sidebar-mini fixed" ng-app="registerApp" ng-controller="registerCtrl">
 	<div class="wrapper">
 
 		<!-- header -->
@@ -48,8 +48,8 @@
 									</div>
 									<div class="box-body border-radius-none"
 										style="display: block;">
-										<form action="javascript:;" method="post"
-											enctype="multipart/form-data" id="addForm">
+										<form action="javascript:;" method="post" 
+											enctype="multipart/form-data" id="addForm" name="addForm">
 											<!-- photo -->
 											<div class="row">
 												<div class="col-md-3" style="float: right;">
@@ -75,17 +75,18 @@
 											<div class="row">
 												<div class="col-md-6">
 													<div class="form-group required">
-														<label class="control-label" for="first_name">First
+														<label  class="control-label" for="first_name">First
 															Name</label> <input type="text" class="form-control"
-															name="first_name" id="first_name"
-															placeholder="First name" />
+															name="first_name" id="first_name" ng-model="first_name"
+															placeholder="First name" ng-required="true" />
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group required">
 														<label class="control-label" for="last_name">Last
 															Name</label> <input type="text" class="form-control"
-															name="last_name" id="last_name" placeholder="Last name" />
+															name="last_name" id="last_name" placeholder="Last name" ng-required="true" 
+															ng-model="last_name"/>
 													</div>
 												</div>
 											</div>
@@ -110,7 +111,7 @@
 													<div class="form-group required">
 														<label class="control-label" for="dob">Birth Date</label>
 														<input type="text" class="form-control" name="dob"
-															id="dob" placeholder="Birth date">
+															id="dob" placeholder="Birth date" ng-model="dob" ng-required="true" >
 													</div>
 												</div>
 											</div>
@@ -120,7 +121,7 @@
 												<div class="col-md-6">
 													<div class="form-group required">
 														<label class="control-label" for="email">Email</label> <input
-															type="email" class="form-control" name="email" id="email" 
+															type="email" class="form-control" name="email" id="email"  ng-model="email" ng-required="true" 
 															placeholder="you@gmail.com">
 													</div>
 												</div>
@@ -129,7 +130,7 @@
 													<div class="form-group required">
 														<label class="control-label" for="password">Password</label>
 														<input type="password" class="form-control"
-															name="password" id="password" placeholder="Password">
+															name="password" id="password" placeholder="Password" ng-model="password" ng-required="true" >
 													</div>
 												</div>
 											</div>
@@ -138,7 +139,8 @@
 											<div class="form-group">
 												<label for="address">Address</label> <input type="text"
 													class="form-control" name="address" id="address"
-													placeholder="Address">
+													placeholder="Address"  ng-model="address" ng-required="true" >
+												
 											</div>
 
 											<div class="row">
@@ -148,7 +150,7 @@
 															type="text" class="form-control" name="phone" id="phone"
 															placeholder="Phone"
 															data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;"
-															data-mask="" placeholder="012-345-6789">
+															data-mask="" placeholder="012-345-6789"  ng-model="phone" ng-required="true" >
 													</div>
 												</div>
 
@@ -156,7 +158,7 @@
 													<div class="form-group">
 														<label for="race">Nationality</label> <input type="text"
 															class="form-control" name="race" id="race"
-															placeholder="Nationality">
+															placeholder="Nationality" ng-model="nationality" ng-required="true" >
 													</div>
 												</div>
 
@@ -166,7 +168,7 @@
 														 <input
 															type="text" class="form-control" name="social_id"
 															id="social_id" placeholder="Social id" data-inputmask="&quot;mask&quot;: &quot;999-999-999&quot;"
-															data-mask="">
+															data-mask="" ng-model="socialId" ng-required="true" >
 													</div>
 												</div>
 											</div>
@@ -212,7 +214,7 @@
 											</div>
 
 											<button type="submit" class="btn btn-primary pull-right"
-												id="add" onclick="insertStudent()">Add</button>
+												id="add" onclick="insertStudent()"  ng-disabled="addForm.$invalid">Add</button>
 <!-- 												<input type="submit" class="btn btn-primary pull-right" id="add" onclick="insertStudent()" value="Add"> -->
 												
 										</form>
@@ -252,6 +254,11 @@
 <!-- import script -->
 <%@ include file="include/script.jsp"%>
 <script>
+
+	var app = angular.module('registerApp', []);
+	app.controller('registerCtrl', function($scope){
+		
+	});
 
 
 	$(function() {

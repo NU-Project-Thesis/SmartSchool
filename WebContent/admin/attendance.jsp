@@ -451,7 +451,7 @@ iframe {
 								//$("#stu_id").val('').end();
 								$("#stu_id").select2("val", "");
 							//  $(this).removeData('bs.modal');
-								alert('fuq');
+							
 						
 							});
 							

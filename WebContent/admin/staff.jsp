@@ -215,7 +215,7 @@
 									</div>
 									<div class="box-body border-radius-none" style="display: none;">
 										<form action="javascript:;" method="post"
-											enctype="multipart/form-data" id="addForm">
+											enctype="multipart/form-data" id="addForm" name="addForm">
 
 											<!-- photo -->
 											<div class="row">
@@ -245,7 +245,7 @@
 																<span class="glyphicon glyphicon-user"></span>
 															</div>
 															<input type="text" class="form-control" name="first_name"
-																id="first_name" ng-model="first_name"
+																id="first_name" ng-model="first_name" ng-required="true"
 																placeholder="First Name">
 														</div>
 														<!-- /.input group -->
@@ -260,8 +260,8 @@
 																<span class="glyphicon glyphicon-user"></span>
 															</div>
 															<input type="text" class="form-control" name="last_name"
-																id="last_name" ng-model="last_name"
-																placeholder="Last Name">
+																id="last_name" ng-model="last_name" ng-required="true"
+																placeholder="Last Name" >
 														</div>
 														<!-- /.input group -->
 													</div>
@@ -273,7 +273,7 @@
 												<label>Gender</label>
 												<div class="form-inline">
 													<label> <input class="flat-red" type="radio" id="M"
-														name="gender" value="Male"> Male
+														name="gender" value="Male" checked=""> Male
 													</label> &nbsp; <label> <input class="flat-red" id="F"
 														type="radio" name="gender" value="Female"> Female
 													</label>
@@ -289,7 +289,7 @@
 																<span class="glyphicon glyphicon-cog"></span>
 															</div>
 															<select class="form-control" name="position"
-																ng-model="position" id="position">
+																ng-model="position" id="position" ng-required="true">
 																<option value="Admin">Admin</option>
 																<option value="Instructor">Instructor</option>
 															</select>
@@ -305,7 +305,7 @@
 															<div class="input-group-addon">
 																<i class="fa fa-phone"></i>
 															</div>
-															<input name="phone" id="phone" type="text"
+															<input name="phone" id="phone" type="text"  ng-required="true"
 																ng-model="phone" class="form-control"
 																data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;"
 																data-mask="" placeholder="012-345-6789">
@@ -322,9 +322,11 @@
 														<div class="input-group">
 															<div class="input-group-addon">@</div>
 															<input type="email" name="email" id="email"
-																ng-model="email" class="form-control"
+																ng-model="email" class="form-control"  ng-required="true" 
 																placeholder="Email">
+															
 														</div>
+															<p ng-show="addForm.email.$invalid" style="color:red">Invalid Email</p>
 														<!-- /.input group -->
 													</div>
 												</div>
@@ -338,7 +340,7 @@
 															</div>
 
 															<span style="float: left;"><input type="password"
-																name="password" id="password" ng-model="password"
+																name="password" id="password" ng-model="password"  ng-required="true"  ng-minlength="6"
 																class="form-control" placeholder="Password"></span> <span
 																style="float: right;">
 																<!-- <input type="password"
@@ -362,7 +364,7 @@
 											<!-- button -->
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-click="save(edit)">Save</button>
+													ng-click="save(edit)" ng-disabled="addForm.$invalid">Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>
