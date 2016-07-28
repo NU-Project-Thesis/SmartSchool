@@ -163,7 +163,7 @@
 													<div class="form-group required">
 														<label for="clGen" class="control-label">Generation</label>
 														<select id="listGenClass" class="form-control"
-															name="clGen" ng-model="gen_Filter">
+															name="clGen" ng-model="gen_Filter" ng-required="true">
 															<option ng-repeat="g in gen" value="{{g.gen_id}}">{{g.gen_name}}</option>
 														</select>
 													</div>
@@ -173,7 +173,7 @@
 												<div class="col-md-3">
 													<div class="form-group required">
 														<label for="clCourse" class="control-label">Course</label>
-														<select class="form-control" name="clCourse" id="clCourse"
+														<select class="form-control" name="clCourse" id="clCourse" ng-required="true"
 															ng-model="cou_id">
 															<option
 																ng-repeat="data in filtered = (course | filter:{gen_id:gen_Filter} | orderBy:cou_name)"
@@ -191,7 +191,7 @@
 															type="text" class="form-control" name="grade" id="grade"
 															ng-model="grade" placeholder="Grade" ng-required="true" ng-pattern="/^$|^[A-Z]+$/" ng-maxlength="1">
 													</div>
-													<span ng-show="addForm.grade.$invalid" style="color:red">*Please input only uppercase single character</span>
+													<span  ng-show="addForm.grade.$invalid&&addForm.grade.$dirty " style="color:red">*Please input only uppercase single character</span>
 													
 												</div>
 												
@@ -199,10 +199,15 @@
 												<div class="col-md-3">
 													<div class="form-group required">
 														<label for="rank_lower" class="control-label">Min
-															Score</label> <input type="text" class="form-control"
+															Score</label>
+															 <input type="text" class="form-control"
 															name="rank_lower" id="rank_lower" ng-model="rank_lower" 
-															placeholder="Min Score" ng-required="true" >
+											ng-maxlength="3" ng-pattern="/^[1-9][0-9]?$|^100$/" 
+															placeholder="Min Score" ng-required="true" ng-keypress="filterValue($event)"">
 													</div>
+													<span style="color:red" ng-show="addForm.rank_lower.$error.maxlength||addForm.rank_lower.$invalid&&addForm.rank_lower.$dirty">*Please input from 1-100,maximum 3 digits</span>
+<!-- 													<span style="color:red" ng-show="addForm.rank_lower.$invalid">*Score can not have more than 3 digits</span> -->
+												 <span ng-show="addForm.min.$error.lowerThan"> Min cannot exceed max.</span>
 												
 												</div>
 
@@ -211,9 +216,12 @@
 													<div class="form-group required">
 														<label for="rank_top" class="control-label">Max
 															Score</label> <input type="text" class="form-control"
-															name="rank_top" id="rank_top" ng-model="rank_top"
-															placeholder="Max Score" ng-required="true" >
+															name="rank_top" id="rank_top" ng-model="rank_top" ng-pattern="/^[1-9][0-9]?$|^100$/"
+															placeholder="Max Score" ng-required="true"  ng-keypress="filterValue($event)" ng-maxlength="3">
+															
 													</div>
+														<span style="color:red" ng-show="addForm.rank_top.$error.maxlength||addForm.rank_top.$invalid&&addForm.rank_top.$dirty">*Please input from 1-100,maximum 3 digits</span>
+										
 												</div>
 
 												<!-- grade detail -->
@@ -229,7 +237,7 @@
 											<br> <br>
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-disabled="error || incomplete || addForm.$invalid" ng-click="save(edit)">Save</button>
+													ng-disabled="error || incomplete || addForm.$invalid" ng-click="save(edit)" >Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>
@@ -259,7 +267,12 @@
 
 	<script type="text/javascript" src="js/angular/score_rule.js"></script>
 	<script type="text/javascript">
+	//validate min and max score
+	
 		$(function() {
+		
+			
+			
 			// initialize searchable combobox
 			$(".select2").select2();
 
