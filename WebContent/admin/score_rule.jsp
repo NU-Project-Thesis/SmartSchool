@@ -155,7 +155,7 @@
 										</div>
 									</div>
 									<div class="box-body border-radius-none" style="display: none;">
-										<form action="#" method="post" id="addForm">
+										<form action="#" method="post" id="addForm" name="addForm">
 
 											<div class="row">
 												<!-- generation -->
@@ -189,18 +189,21 @@
 													<div class="form-group required">
 														<label for="grade" class="control-label">Grade</label> <input
 															type="text" class="form-control" name="grade" id="grade"
-															ng-model="grade" placeholder="Grade">
+															ng-model="grade" placeholder="Grade" ng-required="true" ng-pattern="/^$|^[A-Z]+$/" ng-maxlength="1">
 													</div>
+													<span ng-show="addForm.grade.$invalid" style="color:red">*Please input only uppercase single character</span>
+													
 												</div>
-
+												
 												<!-- rank_lower -->
 												<div class="col-md-3">
 													<div class="form-group required">
 														<label for="rank_lower" class="control-label">Min
 															Score</label> <input type="text" class="form-control"
-															name="rank_lower" id="rank_lower" ng-model="rank_lower"
-															placeholder="Min Score">
+															name="rank_lower" id="rank_lower" ng-model="rank_lower" 
+															placeholder="Min Score" ng-required="true" >
 													</div>
+												
 												</div>
 
 												<!-- rank_top -->
@@ -209,7 +212,7 @@
 														<label for="rank_top" class="control-label">Max
 															Score</label> <input type="text" class="form-control"
 															name="rank_top" id="rank_top" ng-model="rank_top"
-															placeholder="Max Score">
+															placeholder="Max Score" ng-required="true" >
 													</div>
 												</div>
 
@@ -226,7 +229,7 @@
 											<br> <br>
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-disabled="error || incomplete" ng-click="save(edit)">Save</button>
+													ng-disabled="error || incomplete || addForm.$invalid" ng-click="save(edit)">Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>

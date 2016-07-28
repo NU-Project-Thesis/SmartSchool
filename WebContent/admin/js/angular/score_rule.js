@@ -49,7 +49,7 @@ app
 		.controller(
 				'scoreCtrl',
 				function($scope, $http, $timeout) {
-
+$scope.regex="^$|^[A-z]+$";
 					// load active generation
 					$http.get('listScoreRule.hrd').success(function(data) {
 						$scope.list = data;
