@@ -206,6 +206,8 @@ app
 															"New enroll has been added!",
 															"success");
 													$scope.loadData();
+												}else {
+													swal("Error", "One subject in one class can have only one instructor", "error");
 												}
 											}).error(function(){
 												swal("Error", "Cannot add enroll!", "error");

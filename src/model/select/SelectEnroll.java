@@ -52,6 +52,20 @@ public class SelectEnroll {
 		return rs;
 	}
 	
+	/*check subject to enroll staff*/
+	public boolean isHasSubAndClass(int classId, int subId) throws SQLException{
+		pps = con.prepareStatement("select count(*) from tbclassenroll where class_id = ? and sub_id = ? "); 
+		pps.setInt(1, classId);
+		pps.setInt(2, subId);
+		rs = pps.executeQuery();
+		while (rs.next()) {
+			if (rs.getInt(1) > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void close() throws SQLException{
 		if(rs != null)
 			rs.close();

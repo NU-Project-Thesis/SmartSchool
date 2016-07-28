@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import connection.ConnectionDB;
+import model.select.SelectEnroll;
 
 public class InsertEnroll {
 	private Connection con = null;
@@ -19,24 +20,26 @@ public class InsertEnroll {
 		con = ConnectionDB.getConnection();
 	}
 
-	public boolean insertStaffEnroll(model.dto.ClassEnroll enroll) throws SQLException {
+	public boolean insertStaffEnroll(model.dto.ClassEnroll enroll) throws SQLException, ClassNotFoundException {
 
-		CallableStatement ps = con.prepareCall("{call class_enroll(?, ?, ?)}");
-		ps.setInt(1, enroll.getStaff_id());
-		ps.setInt(2, enroll.getSub_id());
-		ps.setInt(3, enroll.getClass_id());
-		ResultSet rs = ps.executeQuery();
-		if (rs.next()) {
-			if (rs.getInt(1) > 0) {
+		if (new SelectEnroll().isHasSubAndClass(enroll.getClass_id(), enroll.getSub_id()) == false) {
+			CallableStatement ps = con.prepareCall("{call class_enroll(?, ?, ?)}");
+			ps.setInt(1, enroll.getStaff_id());
+			ps.setInt(2, enroll.getSub_id());
+			ps.setInt(3, enroll.getClass_id());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getInt(1) > 0) {
 
-				System.out.println("inserted");
-				ps.close();
-				con.close();
-				return true;
+					System.out.println("inserted");
+					ps.close();
+					con.close();
+					return true;
+				}
 			}
+			ps.close();
+			con.close();
 		}
-		ps.close();
-		con.close();
 		return false;
 	}
 
