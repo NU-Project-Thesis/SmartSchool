@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="3.1384283767210093"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="stu_id" class="java.lang.Integer">
+	<parameter name="cou_id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -11,14 +11,8 @@
 		tbr.rank_lower||'-'||tbr.rank_top AS rank,
 		tbr.detail_grade,
 		tbr.grade
-FROM
-	tbgeneration tbg
-		INNER JOIN tbcourse tbc ON tbg.gen_id=tbc.gen_id
-		INNER JOIN tbclass tbcl ON tbc.cou_id=tbcl.cou_id
-		INNER JOIN tbstudentenroll tbstuEn ON tbcl.class_id =tbstuEn.class_id
-		INNER JOIN tbstudent tbs ON tbstuEn.stu_id=tbs.stu_id
-		INNER JOIN tbrule tbr ON tbc.cou_id=tbr.cou_id
-where tbs.stu_id=$P{stu_id}]]>
+FROM tbrule tbr
+where tbr.cou_id=$P{cou_id}]]>
 	</queryString>
 	<field name="rank" class="java.lang.String"/>
 	<field name="detail_grade" class="java.lang.String"/>

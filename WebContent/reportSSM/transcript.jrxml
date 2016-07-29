@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transcript" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6489f9b3-0595-43aa-ab43-06e78264c4ea">
 	<property name="ireport.zoom" value="1.2418426461183147"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="1248"/>
 	<property name="ireport.callouts" value="##Sat Aug 08 01:59:40 PDT 2015"/>
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<style name="table">
@@ -30,22 +30,14 @@
 		</box>
 	</style>
 	<subDataset name="dataset1" uuid="8b072dca-f614-42e6-b1e2-f17911ca650a">
-		<parameter name="stu_id" class="java.lang.Integer">
-			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-		</parameter>
+		<parameter name="cou_id" class="java.lang.String"/>
 		<queryString>
 			<![CDATA[SELECT
 		tbr.rank_lower||'-'||tbr.rank_top AS rank,
 		tbr.detail_grade,
 		tbr.grade
-FROM
-	tbgeneration tbg
-		INNER JOIN tbcourse tbc ON tbg.gen_id=tbc.gen_id
-		INNER JOIN tbclass tbcl ON tbc.cou_id=tbcl.cou_id
-		INNER JOIN tbstudentenroll tbstuEn ON tbcl.class_id =tbstuEn.class_id
-		INNER JOIN tbstudent tbs ON tbstuEn.stu_id=tbs.stu_id
-		INNER JOIN tbrule tbr ON tbc.cou_id=tbr.cou_id
-	where tbs.stu_id=$P{stu_id}]]>
+FROM tbrule tbr
+where tbr.cou_id=$P{cou_id}]]>
 		</queryString>
 		<field name="rank" class="java.lang.String"/>
 		<field name="detail_grade" class="java.lang.String"/>
@@ -269,12 +261,12 @@ GROUP BY
 				<imageExpression><![CDATA[$P{filePath}+"\\back-kshrd.jpg"]]></imageExpression>
 			</image>
 			<subreport>
-				<reportElement x="359" y="495" width="181" height="77" uuid="55b104ea-8e3a-499f-950f-df15a6777a9f"/>
+				<reportElement mode="Transparent" x="359" y="495" width="181" height="77" uuid="55b104ea-8e3a-499f-950f-df15a6777a9f"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="stu_id">
-					<subreportParameterExpression><![CDATA[$P{stu_id}]]></subreportParameterExpression>
+				<subreportParameter name="cou_id">
+					<subreportParameterExpression><![CDATA[$P{cou_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{filePath}+"\\transcript_subreport2.jasper"]]></subreportExpression>
@@ -304,7 +296,7 @@ GROUP BY
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Director]]></text>
+				<text><![CDATA[Directo]]></text>
 			</staticText>
 			<line>
 				<reportElement x="-1" y="742" width="556" height="1" uuid="5f153656-8432-46ee-aa11-f53c90f564c7"/>
