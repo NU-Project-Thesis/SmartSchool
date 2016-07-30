@@ -178,7 +178,7 @@
 														<label for="gen_name" class="control-label">Generation</label>
 														<input type="text" class="form-control" name="gen_name"
 															id="gen_name" placeholder="Generation"
-															ng-model="generation" ng-focus="showStartDate=true">
+															ng-model="generation" ng-focus="showStartDate=true" ng-required="true">
 													</div>
 												</div>
 
@@ -205,7 +205,7 @@
 											<input type="hidden" ng-model="is_finish" />
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-disabled="error || incomplete" ng-click="save(edit)">Save</button>
+													ng-disabled="error || incomplete||!generation.length||!startdate.length||!enddate.length" ng-click="save(edit)">Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>

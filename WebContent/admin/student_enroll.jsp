@@ -288,7 +288,7 @@
 														<input type="hidden" id="stu_id" name="stu_id" /> <label
 															class="control-label">Student</label> <select
 															class="form-control select2" multiple="multiple"
-															data-placeholder="Select students" id="stu">
+															data-placeholder="Select students" id="stu" ng-model="stu">
 															<option ng-repeat="stu in student" value="{{stu.stu_id}}">{{stu.first_name}}
 																{{stu.last_name}}</option>
 														</select>
@@ -298,7 +298,7 @@
 											</div>
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-click="save(edit)">Save</button>
+													ng-click="save(edit)" ng-disabled="!stu.length">Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>

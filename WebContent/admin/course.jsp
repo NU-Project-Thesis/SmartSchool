@@ -223,7 +223,7 @@
 															Date</label> <input type="text" class="form-control"
 															name="cou_start_date" id="start_date"
 															placeholder="Click here to select date"
-															ng-model="start_date" />
+															ng-model="start_date"/>
 													</div>
 												</div>
 
@@ -240,7 +240,7 @@
 											<input type="hidden" ng-model="is_finish" />
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-disabled="error || incomplete" ng-click="save(edit)">Save</button>
+													ng-disabled="error || incomplete||!start_date.length||!end_date.length" ng-click="save(edit)">Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>
@@ -278,6 +278,12 @@
 
 			$("#btn-collapse").click();
 			$("#change-label").click();
+			// clear inputs
+			 $(':input','#addForm')
+			 .not(':button, :submit, :reset, :hidden')
+			 .val('')
+			 .removeAttr('checked')
+			 .removeAttr('selected');
 
 		});
 

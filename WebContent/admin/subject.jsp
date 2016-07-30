@@ -169,7 +169,7 @@
 											</button>
 										</div>
 										<div class="box-tools pull-right">
-											<button class="btn btn-danger btn-sm"
+											<button class="btn btn-primary btn-sm"
 												ng-click="editUser('new')" id="btnadd">
 												<i class="fa fa-plus"></i>
 											</button>
@@ -182,7 +182,7 @@
 													<div class="form-group required">
 														<label for="sub_name" class="control-label">Subject</label>
 														<input type="text" class="form-control" name="sub_name"
-															id="sub_name" placeholder="Subject" ng-model="sub_name">
+															id="sub_name" placeholder="Subject" ng-model="sub_name" ng-required="true">
 													</div>
 												</div>
 
@@ -200,7 +200,7 @@
 											<input type="hidden" ng-model="active" />
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-click="save(edit)">Save</button>
+													ng-click="save(edit)" ng-disabled="!sub_name.length">Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>

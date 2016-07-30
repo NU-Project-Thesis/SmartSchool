@@ -326,7 +326,7 @@
 																placeholder="Email">
 															
 														</div>
-															<p ng-show="addForm.email.$invalid" style="color:red">Invalid Email</p>
+															<p ng-show="addForm.email.$invalid&&addForm.email.$dirty"  style="color:red">Invalid Email</p>
 														<!-- /.input group -->
 													</div>
 												</div>
@@ -343,12 +343,15 @@
 																name="password" id="password" ng-model="password"  ng-required="true"  ng-minlength="6"
 																class="form-control" placeholder="Password"></span> <span
 																style="float: right;">
+																			
 																<!-- <input type="password"
 																name="confirmPassword" id="confirmPassword"
 																ng-model="confirmPassword" class="form-control"
 																placeholder="Confirm Password"> -->
 															</span>
 														</div>
+														<p ng-show="addForm.password.$invalid&&addForm.password.$dirty"  style="color:red">*Password must be at least 6 characters!</p>
+												
 														<!-- /.input group -->
 													</div>
 												</div>

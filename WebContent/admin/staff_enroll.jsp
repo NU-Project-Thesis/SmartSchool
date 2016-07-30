@@ -283,7 +283,8 @@
 													<div class="form-group required">
 														<label style="display: block;" class="control-label">Instructor</label>
 														<input class="form-control" type="text" id="temp_staff"
-															ng-show="temp_staff_show" ng-disabled="true" /> <select
+															ng-show="temp_staff_show" ng-disabled="true" />
+															 <select
 															class="form-control select2" name="sStaff_id"
 															ng-show="staff_show" id="sStaff_id" ng-model="staff_id">
 															<option ng-repeat="st in staff" value="{{st.staff_id}}">{{st.first_name}}

@@ -135,15 +135,15 @@ iframe {
 										<!-- /.input group -->
 									</div>
 									<!-- date -->
-									<div class="form-group" ng-show="showDate">
+									<div class="form-group" ng-show="showDate" name="mydiv">
 										<div class="input-group">
 											<div class="input-group-addon">
 												<span>Date</span>
 											</div>
 											<input type="text" class="form-control" name="date_"
-												id="date_" placeholder="Select date">
+											ng-model="selectDate"	id="date_" placeholder="Select date" ng-required="true">
 											<div class="input-group-btn">
-												<button type="button" class="btn btn-warning"
+												<button type="button" ng-disabled="!selectDate.length" class="btn btn-warning"
 													id="btn-preview">Preview</button>
 												<button type="button" class="btn btn-success"
 													id="btn-export">Export</button>
