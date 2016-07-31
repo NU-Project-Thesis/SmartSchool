@@ -203,7 +203,7 @@
 															 <input type="text" class="form-control"
 															name="rank_lower" id="rank_lower" ng-model="rank_lower" 
 											ng-maxlength="3" ng-pattern="/^[1-9][0-9]?$|^100$/" 
-															placeholder="Min Score" ng-required="true" ng-keypress="filterValue($event)"">
+															placeholder="Min Score" ng-required="true" ng-keypress="filterValue($event)">
 													</div>
 													<span style="color:red" ng-show="addForm.rank_lower.$error.maxlength||addForm.rank_lower.$invalid&&addForm.rank_lower.$dirty">*Please input from 1-100,maximum 3 digits</span>
 <!-- 													<span style="color:red" ng-show="addForm.rank_lower.$invalid">*Score can not have more than 3 digits</span> -->
