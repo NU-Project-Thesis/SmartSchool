@@ -126,7 +126,7 @@ app
 							$("#btn-collapse").click();
 						$scope.editid = id;
 						if (id == 'new') {
-							$('#listGenClass').
+							
 							$scope.edit = true;
 							$scope.incomplete = true;
 							setSelecteFirst('#listGenClass');
