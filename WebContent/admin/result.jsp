@@ -194,7 +194,7 @@ iframe {
 					$("#box-preview").hide();
 
 					$('#btn-preview').on('click', function() {
-						alert($("#date_").val());
+					//	alert($("#date_").val());
 								
 								$("#box-preview").show();
 								var url = "";
