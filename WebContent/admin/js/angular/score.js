@@ -112,23 +112,10 @@ app
 					$scope.save = function(e) {
 
 						var score = new Array();
-					
 						var id = new Array();
 
 						$.each($("input[name='score[]']"), function() {
-							
-							
-							
-							for(var i=0;i<score.length;i++){
-								if (score.trim().length == 0) {
-				                   score.push(0);
-				                }
-								else{
-									score.push($(this).val());
-								}
-								
-								
-							}
+							score.push($(this).val());
 						});
 
 						$.each($("input[name='id[]']"), function() {
@@ -138,11 +125,8 @@ app
 						$("#spinner").show();
 
 						if (e == true) { // insert gen
-						
 							var data = {
-								
 								'score' : score.toString(),
-								
 								'score_date' : $('#date_').val(),
 								'stu_id' : id.toString(),
 								'sub_id' : $('#sub_id').val(),
