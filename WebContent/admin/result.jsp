@@ -183,11 +183,18 @@ iframe {
 		$(document).ready(
 				function() {
 
-					$("#date_").datepicker();
+					$("#date_").datepicker({
+						
+						format: "mm/dd/yyyy",
+						startView: "months", 
+					    minViewMode: "months"
+					});
+					
 
 					$("#box-preview").hide();
 
 					$('#btn-preview').on('click', function() {
+						alert($("#date_").val());
 								
 								$("#box-preview").show();
 								var url = "";

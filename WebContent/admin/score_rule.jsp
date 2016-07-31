@@ -220,7 +220,7 @@
 															placeholder="Max Score" ng-required="true"  ng-keypress="filterValue($event)" ng-maxlength="3">
 															
 													</div>
-														<span style="color:red" ng-show="addForm.rank_top.$error.maxlength||addForm.rank_top.$invalid&&addForm.rank_top.$dirty">*Please input from 1-100,maximum 3 digits</span>
+														<span style="color:red" ng-show="addForm.rank_top.$error.maxlength||addForm.rank_top.$invalid&&addForm.rank_top.$dirty">*Please input from 0-100,maximum 3 digits</span>
 										
 												</div>
 
