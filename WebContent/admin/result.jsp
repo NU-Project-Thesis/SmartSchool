@@ -145,8 +145,8 @@ iframe {
 											<div class="input-group-btn">
 												<button type="button" ng-disabled="!selectDate.length" class="btn btn-warning"
 													id="btn-preview">Preview</button>
-												<button type="button" class="btn btn-success"
-													id="btn-export">Export</button>
+<!-- 												<button type="button" class="btn btn-success" -->
+<!-- 													id="btn-export">Export</button> -->
 											</div>
 										</div>
 									</div>
@@ -183,11 +183,18 @@ iframe {
 		$(document).ready(
 				function() {
 
-					$("#date_").datepicker();
+					$("#date_").datepicker({
+						
+						format: "mm/dd/yyyy",
+						startView: "months", 
+					    minViewMode: "months"
+					});
+					
 
 					$("#box-preview").hide();
 
 					$('#btn-preview').on('click', function() {
+					//	alert($("#date_").val());
 								
 								$("#box-preview").show();
 								var url = "";
