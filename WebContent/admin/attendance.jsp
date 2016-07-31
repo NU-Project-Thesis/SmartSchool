@@ -98,9 +98,9 @@ iframe {
 										<label class="control-label">Shift</label>
 										<div class="form-inline">
 											<label> <input id="am" class="flat-red" type="radio"
-												name="shift" value="am"> Morning
+												name="shift" value="am" checked="true" > Morning
 											</label> &nbsp; <label> <input id="pm" class="flat-red"
-												type="radio" name="shift" value="pm"> Afternoon
+												type="radio"  name="shift" value="pm"> Afternoon
 											</label>
 										</div>
 									</div>
