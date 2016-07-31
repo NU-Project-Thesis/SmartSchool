@@ -145,8 +145,8 @@ iframe {
 											<div class="input-group-btn">
 												<button type="button" ng-disabled="!selectDate.length" class="btn btn-warning"
 													id="btn-preview">Preview</button>
-												<button type="button" class="btn btn-success"
-													id="btn-export">Export</button>
+<!-- 												<button type="button" class="btn btn-success" -->
+<!-- 													id="btn-export">Export</button> -->
 											</div>
 										</div>
 									</div>

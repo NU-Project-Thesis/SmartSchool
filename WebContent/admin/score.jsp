@@ -443,7 +443,9 @@
 				$("#change-label").click();
 
 			});
+			
 
+			
 			$.fn.monthYearPicker = function(options) {
 				options = $.extend({
 					dateFormat : "MM yy",
