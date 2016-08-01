@@ -228,7 +228,7 @@
 										</div>
 									</div>
 									<div class="box-body border-radius-none" style="display: none;">
-										<form action="#" method="post" id="addForm">
+										<form action="#" method="post" id="addForm" name="addForm">
 
 											<div class="form-inline">
 
@@ -260,6 +260,7 @@
 
 												<!-- course -->
 												<div class="form-group" ng-show="showcourse_">
+
 													<div class="input-group">
 														<div class="input-group-addon">
 															<span>Course</span>
@@ -339,15 +340,18 @@
 															<td>{{st.first_name}} {{st.last_name}}</td>
 															<td>{{st.gender}}</td>
 															<td><input id="score{{st.stu_id}}" name="score[]"
-																type="text"> <input type="hidden" name="id[]"
-																value="{{st.stu_id}}"></td>
+																type="text" only-digits ng-required="true"
+																ng-model="score"
+																ng-pattern="/^[1-9][0-9]?$|^100$/"> <input
+																type="hidden" name="id[]" value="{{st.stu_id}}"></td>
+														</tr>
 													</tbody>
 												</table>
 											</div>
 											<br> <br>
 											<div class="btn-group pull-right">
 												<button type="button" class="btn btn-success" id="addGen"
-													ng-click="save(edit)">Save</button>
+													ng-click="save(edit)" ng-disabled="error || incomplete || addForm.$invalid">Save</button>
 												<button type="button" class="btn btn-danger" id="btncancel">Cancel</button>
 											</div>
 										</form>
@@ -377,7 +381,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Modal Header</h4>
+							<h4 class="modal-title">Edit Score</h4>
 						</div>
 						<div class="modal-body">
 							<form action="javascript:;" id="editScoreForm">

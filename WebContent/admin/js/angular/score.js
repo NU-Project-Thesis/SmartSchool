@@ -46,7 +46,9 @@ app
 					 * $http.get('selectStudentWithScore.hrd').success(function(data) {
 					 * $scope.studentScore = data; });
 					 */
-
+					
+					$scope.inputValid = false;
+					
 					$http.get('selectStudentNoScore.hrd').success(
 							function(data) {
 								$scope.studentNoScore = data;
@@ -104,9 +106,10 @@ app
 
 					$scope.editUser = function(id) {
 						if ($("#collapse-status").attr('class') == "fa fa-plus")
-							$("#btn-collapse").click();	
+							$("#btn-collapse").click();
 						$scope.editid = id;
-						if (id == 'new') {}
+						if (id == 'new') {
+						}
 					};
 
 					$scope.save = function(e) {
@@ -130,14 +133,14 @@ app
 								'score_date' : $('#date_').val(),
 								'stu_id' : id.toString(),
 								'sub_id' : $('#sub_id').val(),
-								'class_id': $('#classFilter_').val()
+								'class_id' : $('#classFilter_').val()
 							};
 							$
 									.post("insertScore.hrd", data)
 									.success(
 											function(data, status, headers) {
 												if (data == "Success") {
-													//addForm.reset();
+													// addForm.reset();
 													$("#btn-collapse").click();
 													swal(
 															"Congratulation!",
@@ -157,7 +160,7 @@ app
 							$.post("updateStudentEnroll.hrd", data).success(
 									function(data, status, headers) {
 										if (data == "Success") {
-											//addForm.reset();
+											// addForm.reset();
 											$("#btn-collapse").click();
 											swal("Congratulation!",
 													"Enroll has been updated!",
@@ -170,32 +173,36 @@ app
 						$("#spinner").hide();
 
 					};
-					
-					$scope.editScore = function(id){
+
+					$scope.editScore = function(id) {
 						$scope.editid = id;
 						for (var i = 0; i < $scope.studentScore.length; i++) {
 							if ($scope.studentScore[i].score_id == id) {
 								$('#stu_id').val(id);
-								$('#stu_name').val($scope.studentScore[i].first_name + ' ' + $scope.studentScore[i].last_name);
-								$('#stu_score').val($scope.studentScore[i].score);
+								$('#stu_name')
+										.val(
+												$scope.studentScore[i].first_name
+														+ ' '
+														+ $scope.studentScore[i].last_name);
+								$('#stu_score').val(
+										$scope.studentScore[i].score);
 								openModal.click();
 							}
 						}
 					}
-					
-					$scope.saveUpdateScore = function(){
+
+					$scope.saveUpdateScore = function() {
 						var data = {
-							'score_id': $scope.editid,
-							'score': $('#stu_score').val()
-							
+							'score_id' : $scope.editid,
+							'score' : $('#stu_score').val()
+
 						};
-						$.post('updateScore.hrd', data, function(d){
-							if(d=="Success"){
+						$.post('updateScore.hrd', data, function(d) {
+							if (d == "Success") {
 								editScoreForm.reset();
 								btnclose.click();
 								swal("Congratulation!",
-										"Score has been updated!",
-										"success")
+										"Score has been updated!", "success")
 								$scope.loadData();
 							}
 						})
@@ -243,6 +250,71 @@ app
 					};
 
 				});
+
+// only allow number
+app.directive('onlyDigits', function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function (scope, element, attr, ctrl) {
+          function inputValue(val) {
+            if (val) {
+              var digits = val.replace(/[^0-9]/g, '');
+//              if(val<0 || val>100){
+//            	  alert("Cannot input score more than 100.");
+//            	  $scope.inputValid = false;
+//            	  return;
+//              }else{
+//            	  $scope.inputValid = true;
+//            	  return;
+//              }
+            	  
+              if (digits !== val) {
+                ctrl.$setViewValue(digits);
+                ctrl.$render();
+              }
+              return parseInt(digits,10);
+            }
+            return undefined;
+          }            
+          ctrl.$parsers.push(inputValue);
+        }
+      };
+  });
+
+// min value
+//module.directive("min", function () {
+//    return {
+//        restrict: "A",
+//        require: "ngModel",
+//        link: function (scope, element, attributes, ngModel) {
+//            ngModel.$validators.min = function (modelValue) {
+//                if (!isNaN(modelValue) && modelValue !== "" && attributes.min !== "")
+//                    return parseFloat(modelValue) >= attributes.min;
+//                else
+//                    return true;
+//            }
+//        }
+//    };
+//});
+//
+//// max value
+//module.directive("max", function () {
+//    return {
+//        restrict: "A",
+//        require: "ngModel",
+//        link: function (scope, element, attributes, ngModel) {
+//            ngModel.$validators.max = function (modelValue) {
+//                if (!isNaN(modelValue) && modelValue !== "" && attributes.max !== "")
+//                    return parseFloat(modelValue) <= attributes.max;
+//                else
+//                    return true;
+//            }
+//        }
+//    };
+//});
+
+
 
 // select combobox
 // Set selected
