@@ -90,8 +90,8 @@
 
 									<div class="col-md-3">
 										<div class="form-group center">
-											<img id="photo" class="profile-photo" alt="Profile Photo"
-												onclick="clickPhoto();" src="image/student/{{data.photo}}">
+											<img id="photo" class="profile-photo" alt="Profile Photo" 
+												 src="image/student/{{data.photo}}">
 
 										</div>
 									</div>

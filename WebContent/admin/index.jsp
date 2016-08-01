@@ -77,7 +77,7 @@
 
 				<div class="row">
 					<!-- calendar -->
-					<section class="col-lg-8 connectedSortable ui-sortable">
+					<section class="col-lg-12 connectedSortable ui-sortable">
 						<div class="box box-success">
 							<div class="box-header">
 								<h3 class="box-title">Attendance</h3>
@@ -96,86 +96,86 @@
 					</section>
 
 					<!-- student summary -->
-					<section class="col-lg-4 connectedSortable ui-sortable">
-						<div class="box box-info">
-							<div class="box-header with-border">
-								<h3 class="box-title">Student Summary</h3>
-								<div class="box-tools pull-right">
-									<button class="btn btn-box-tool" data-widget="collapse">
-										<i class="fa fa-minus"></i>
-									</button>
-								</div>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<!-- start each box -->
-								<div class="info-box bg-aqua disabled color-palettet">
-									<span class="info-box-icon"><i class="">1<sup>st</sup></i></span>
-									<div class="info-box-content">
-										<span class="info-box-text">1<sup>st</sup> Generation
-										</span> <span class="info-box-number">48</span>
-										<div class="progress">
-											<div class="progress-bar" style="width: 48%"></div>
-										</div>
-										<div class="btn-group">
-											<button type="button" class="btn btn-info btn-xs">
-												Male <span class="badge">40</span>
-											</button>
-											<button type="button" class="btn btn-info btn-xs">
-												Female <span class="badge">8</span>
-											</button>
-										</div>
-									</div>
-									<!-- /.info-box-content -->
-								</div>
-								<!-- end each box -->
+<!-- 					<section class="col-lg-4 connectedSortable ui-sortable"> -->
+<!-- 						<div class="box box-info"> -->
+<!-- 							<div class="box-header with-border"> -->
+<!-- 								<h3 class="box-title">Student Summary</h3> -->
+<!-- 								<div class="box-tools pull-right"> -->
+<!-- 									<button class="btn btn-box-tool" data-widget="collapse"> -->
+<!-- 										<i class="fa fa-minus"></i> -->
+<!-- 									</button> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							/.box-header -->
+<!-- 							<div class="box-body"> -->
+<!-- 								start each box -->
+<!-- 								<div class="info-box bg-aqua disabled color-palettet"> -->
+<!-- 									<span class="info-box-icon"><i class="">1<sup>st</sup></i></span> -->
+<!-- 									<div class="info-box-content"> -->
+<!-- 										<span class="info-box-text">1<sup>st</sup> Generation -->
+<!-- 										</span> <span class="info-box-number">48</span> -->
+<!-- 										<div class="progress"> -->
+<!-- 											<div class="progress-bar" style="width: 48%"></div> -->
+<!-- 										</div> -->
+<!-- 										<div class="btn-group"> -->
+<!-- 											<button type="button" class="btn btn-info btn-xs"> -->
+<!-- 												Male <span class="badge">40</span> -->
+<!-- 											</button> -->
+<!-- 											<button type="button" class="btn btn-info btn-xs"> -->
+<!-- 												Female <span class="badge">8</span> -->
+<!-- 											</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 									/.info-box-content -->
+<!-- 								</div> -->
+<!-- 								end each box -->
 
-								<!-- start each box -->
-								<div class="info-box bg-green">
-									<span class="info-box-icon"><i class="">2<sup>nd</sup></i></span>
-									<div class="info-box-content">
-										<span class="info-box-text">2<sup>nd</sup> Generation
-										</span> <span class="info-box-number">68</span>
-										<div class="progress">
-											<div class="progress-bar" style="width: 68%"></div>
-										</div>
-										<div class="btn-group">
-											<button type="button" class="btn btn-success btn-xs">
-												Male <span class="badge">58</span>
-											</button>
-											<button type="button" class="btn btn-success btn-xs">
-												Female <span class="badge">10</span>
-											</button>
-										</div>
-									</div>
-									<!-- /.info-box-content -->
-								</div>
-								<!-- end each box -->
+<!-- 								start each box -->
+<!-- 								<div class="info-box bg-green"> -->
+<!-- 									<span class="info-box-icon"><i class="">2<sup>nd</sup></i></span> -->
+<!-- 									<div class="info-box-content"> -->
+<!-- 										<span class="info-box-text">2<sup>nd</sup> Generation -->
+<!-- 										</span> <span class="info-box-number">68</span> -->
+<!-- 										<div class="progress"> -->
+<!-- 											<div class="progress-bar" style="width: 68%"></div> -->
+<!-- 										</div> -->
+<!-- 										<div class="btn-group"> -->
+<!-- 											<button type="button" class="btn btn-success btn-xs"> -->
+<!-- 												Male <span class="badge">58</span> -->
+<!-- 											</button> -->
+<!-- 											<button type="button" class="btn btn-success btn-xs"> -->
+<!-- 												Female <span class="badge">10</span> -->
+<!-- 											</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 									/.info-box-content -->
+<!-- 								</div> -->
+<!-- 								end each box -->
 
-								<!-- start each box -->
-								<div class="info-box bg-orange disabled color-palette">
-									<span class="info-box-icon"><i class="">3<sup>rd</sup></i></span>
-									<div class="info-box-content">
-										<span class="info-box-text">3<sup>rd</sup> Generation
-										</span> <span class="info-box-number">60</span>
-										<div class="progress">
-											<div class="progress-bar" style="width: 60%"></div>
-										</div>
-										<div class="btn-group">
-											<button type="button" class="btn btn-warning btn-xs">
-												Male <span class="badge">52</span>
-											</button>
-											<button type="button" class="btn btn-warning btn-xs">
-												Female <span class="badge">8</span>
-											</button>
-										</div>
-									</div>
-									<!-- /.info-box-content -->
-								</div>
-								<!-- end each box -->
-							</div>
-						</div>
-					</section>
+<!-- 								start each box -->
+<!-- 								<div class="info-box bg-orange disabled color-palette"> -->
+<!-- 									<span class="info-box-icon"><i class="">3<sup>rd</sup></i></span> -->
+<!-- 									<div class="info-box-content"> -->
+<!-- 										<span class="info-box-text">3<sup>rd</sup> Generation -->
+<!-- 										</span> <span class="info-box-number">60</span> -->
+<!-- 										<div class="progress"> -->
+<!-- 											<div class="progress-bar" style="width: 60%"></div> -->
+<!-- 										</div> -->
+<!-- 										<div class="btn-group"> -->
+<!-- 											<button type="button" class="btn btn-warning btn-xs"> -->
+<!-- 												Male <span class="badge">52</span> -->
+<!-- 											</button> -->
+<!-- 											<button type="button" class="btn btn-warning btn-xs"> -->
+<!-- 												Female <span class="badge">8</span> -->
+<!-- 											</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 									/.info-box-content -->
+<!-- 								</div> -->
+<!-- 								end each box -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</section> -->
 				</div>
 			</section>
 		</div>
