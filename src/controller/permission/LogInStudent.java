@@ -48,6 +48,12 @@ public class LogInStudent implements Filter {
 		Student dto = (Student) session.getAttribute("stu");
 		
 		System.out.println(req.getRequestURI());
+		if (req.getRequestURI().contains("/StudentCertificate.pdf")) {
+			// go to the page that user request
+			chain.doFilter(request, response);
+			return;
+		}
+		
 		if (dto == null && !req.getRequestURI().contains("student") && !req.getRequestURI().contains("admin") && !req.getRequestURI().contains("image")) {
 			res.sendRedirect(s + "/student/index.jsp");
 			return;

@@ -49,7 +49,14 @@ public class LogInUser implements Filter {
 		StaffDTO user = (StaffDTO) session.getAttribute("user");
 
 		System.out.println(req.getRequestURI());
-		if (user == null && !req.getRequestURI().contains("hrd-admin")) {
+		
+		if (req.getRequestURI().contains("/admin/reportCertificate.pdf")) {
+			// go to the page that user request
+			chain.doFilter(request, response);
+			return;
+		}
+		
+		if(user == null && !req.getRequestURI().contains("hrd-admin")) {
 			res.sendRedirect(s + "/hrd-admin/index.jsp");
 			return;
 		}
