@@ -68,12 +68,12 @@
                                   </div>
                            <div class="form-group">
                              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                             <input type="password" class="form-control" id="psw" placeholder="Enter password" name="password">
+                             <input type="password" class="form-control" id="psw" placeholder="Enter password" name="">
                            </div>
                            <div class="checkbox" style="display: none;">
                             <label><input type="checkbox" value="" checked>Remember me</label>
                            </div>
-                       <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> SigIn</button>
+                       <button type="submit" class="btn btn-success btn-block" id="btnSignin"><span class="glyphicon glyphicon-off"></span> SigIn</button>
                        </form>
                              </div>
 			             </div><!--form-bottom-->
@@ -199,11 +199,13 @@ $(document).ready(function() {
 			$.post('userLoginProcess.hrd', data, function(data){
 				if(data==='Fail'){
 					sweetAlert("Login failed!", "Invalid email or password!", "error");
+					$('#btnSignin').removeAttr("disabled");
 				}else if(data==='Success'){
 					//$(location).attr('href', '../index.jsp');
 					window.location.href='../admin/index.jsp';
 				}else{
 					sweetAlert("Login failed!", "This user has been droped!", "error");
+					
 				}
 			});
 		}

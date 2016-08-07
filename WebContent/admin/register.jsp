@@ -344,8 +344,8 @@
 		var mothername = $('#mother_name').val();
 		
 		if(!validateEmail(email)){
-			alert(validateEmail("abc@gmail.com"));
-			alert(email);
+			//alert(validateEmail("abc@gmail.com"));
+			//alert(email);
 			swal("Error!","Your email format is wrong!");
 		}
 		else if(!(validateOnlyChar(firstname)&&validateOnlyChar(lastname)

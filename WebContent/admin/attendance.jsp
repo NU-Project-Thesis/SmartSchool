@@ -12,6 +12,11 @@ iframe {
 	width: 100% !important;
 	height: 500px !important;
 }
+select>option:empty { display:none }
+.select2-container.form-control {
+     height: auto !important;
+}
+
 </style>
 </head>
 <body class="skin-green-light sidebar-mini fixed">
@@ -62,7 +67,7 @@ iframe {
 								<form action="javascript:;" id="addForm">
 									<div class="row">
 
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<div class="form-group required">
 												<label class="control-label">Date</label> <input
 													class="form-control" type="text" id="att_date"
@@ -70,24 +75,38 @@ iframe {
 											</div>
 										</div>
 
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<div class="form-group required">
-												<label class="control-label">Generation</label> <select
+												<label class="control-label">Generation</label>
+												 <select
 													class="form-control" id="gen_id" name="gen_id"
-													ng-model="genFilter">
-													<option ng-repeat="g in activeGen" value="{{g.gen_id}}">{{g.gen_name}}</option>
+													ng-model="genFilter" disabled><option ng-selected="true" id="activeGen" ng-repeat="g in activeGen" value="{{g.gen_id}}">{{g.gen_name}}</option>
 												</select>
+												
+												
 											</div>
 										</div>
 
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<div class="form-group required">
-												<label class="control-label">Course</label> <select
+												<label class="control-label">Course</label><select
 													class="form-control" id="cou_id" name="cou_id"
-													ng-model="courseFilter">
-													<option
+													ng-model="courseFilter" disabled><option ng-selected="true"
 														ng-repeat="c in filtered = (activeCourse | filter:{gen_id:genFilter} | orderBy:cou_name)"
 														value="{{c.cou_id}}">{{c.cou_name}}</option>
+												</select>
+											</div>
+										</div>
+										
+										<!-- class -->
+											<div class="col-md-3">
+											<div class="form-group required">
+												<label class="control-label">Class</label> 
+												<select 
+													class="form-control" id="class_id" name="class_id"
+													ng-model="classFilter"><option ng-selected=""
+														ng-repeat="c in filtered = (activeClass)"
+														value="{{c.class_id}}">{{c.class_name}}</option>
 												</select>
 											</div>
 										</div>
@@ -105,14 +124,20 @@ iframe {
 										</div>
 									</div>
 
-									<div class="form-group required">
+									<div class="form-group required" id="stuSelect" >
 										<label class="control-label">Student</label> 
-										<select id="stu_id" class="form-control select2" multiple="multiple"
-											data-placeholder="Select students">
-											<option ng-repeat="stu in filtered = (student | filter:{gen_id:genFilter} | filter:{cou_id:courseFilter} | orderBy:first_name)"
+										 <select id="stu_id" class="form-control select2" multiple="multiple"
+											data-placeholder="Select students" ng-model="studentFilter">
+											<option ng-repeat="stu in filtered = (students|filter:{class_id:classFilter}| orderBy:first_name)"
 												value="{{stu.stu_id}}">{{stu.first_name}}
 												{{stu.last_name}}</option>
-										</select>
+										</select> 
+										<!--  <div class="checkbox checkbox-circle" ng-repeat="stu in filtered = (student | filter:{gen_id:genFilter} | filter:{cou_id:courseFilter} | orderBy:first_name)">
+                       						 <input id="checkbox7" class="styled" type="checkbox">
+                       							 <label for="checkbox7" value="{{stu.stu_id}}">
+                        						   {{stu.first_name}}{{stu.last_name}}
+                      							  </label>
+                  						  </div> -->
 									</div>
 
 									<div class="form-group">
@@ -277,8 +302,17 @@ iframe {
 		$(document)
 				.ready(
 						function() {
+							
+							  $("#stu_id").css("height", parseInt($("#stu_id option").length) * 20);
+							
+							//set active gen selected
+						//$('#activeGen').attr('selected',"seleccted");
+					//$('#gen_id');
+				//		$('#gen_id > option:first').remove();
+					//	$('#cou_id option:first').remove();
 						
-
+					//	$('#cou_id option:first').attr("selected","selected");
+						
 							$("#start_date").datepicker();
 							$("#end_date").datepicker();
 
@@ -294,7 +328,11 @@ iframe {
 									});
 
 							// initialize multiple combobox
-							$(".select2").select2();
+							$(".select2").select2({
+								closeOnSelect:false
+							});
+							
+							
 
 							// initialize date picker
 							$("#att_date").datepicker();
@@ -376,6 +414,10 @@ iframe {
 												 */
 												select : function(start, end,
 														allDay) {
+													console.log('click');
+												//	$('#gen_id > option:first').next().attr("selected","selected");
+													//$('#cou_id > option:first').remove();
+													
 													if (start.add('days', 1)
 															.date() != end
 															.date())
@@ -383,6 +425,7 @@ iframe {
 																.fullCalendar('unselect');
 													
 													openmodal.click();
+													
 
 													// assign date to modal
 													var d = new Date(start);
@@ -422,6 +465,7 @@ iframe {
 												eventClick : function(calEvent,
 														jsEvent, view) {
 													
+												
 													var id = calEvent.title
 															.split(' ');
 													/* delete attendance */

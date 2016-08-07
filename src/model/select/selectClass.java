@@ -32,6 +32,19 @@ public class selectClass {
 		rs = st.executeQuery(sql);
 		return rs;
 	}
+	//select active class
+	
+	/**
+	 * @return ResultSet
+	 * @throws SQLException
+	 */
+	public ResultSet SelectActiveClass() throws SQLException {
+		sql = "SELECT cl.class_id,cl.class_name,g.gen_id, g.gen_name FROM tbgeneration g inner JOIN tbcourse c on g.gen_id=c.gen_id inner JOIN tbclass cl on c.cou_id = cl.cou_id WHERE g.is_finish=FALSE";
+		st = con.createStatement();
+		rs = st.executeQuery(sql);
+		return rs;
+	}
+
 
 	/**
 	 * Select record from tblClass

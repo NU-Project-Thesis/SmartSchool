@@ -17,7 +17,7 @@ app
 		.controller(
 				'attendanceCtrl',
 				function($scope, $http, $timeout) {
-
+					//  $scope.form = {type : $scope.typeOptions[0].value};
 					$http.get('listDailyAttendance.hrd').success(function(data) {
 
 						$scope.list = data;
@@ -81,6 +81,7 @@ app
 
 						// load course
 						$http.get('listCourse.hrd').success(function(data) {
+						//	console.log(data);
 							$scope.course = data;
 						});
 
@@ -89,17 +90,32 @@ app
 								function(data) {
 									$scope.activeCourse = data;
 								});
-
-						// class
+						
+						// load active class
+						$http.get('listActiveClass.hrd').success(
+								function(data){
+									console.log(data);
+									$scope.activeClass=data;
+								}
+						);
+						// classfiltered
 						$http.get('listClass.hrd').success(function(data) {
 							$scope.class_ = data;
+							//console.log("listclass"+data)
 						});
+						
 						
 						// student
 						$http.get('listStudentEnroll.hrd').success(function(data) {
-							$scope.student = data;
+							console.log(data);
+							$scope.students = data;
+						
 						});
 					};
+					
+					$scope.$watch('classFilter', function(o, n){
+						console.log($scope.classFilter)
+					});
 
 					/* set page for pagination */
 					$scope.setPage = function(pageNo) {
@@ -256,7 +272,7 @@ function setSelectedValue(selectObj, valueToSet) {
 function setSelecteFirst(selector) {
 	// remove "selected" from any options that might already be selected
 	$(selector + ' option[selected="selected"]').each(function() {
-		$(this).removeAttr('selected');
+		//$(this).removeAttr('selected');
 	});
 
 	// mark the first option as selected
@@ -287,7 +303,7 @@ function restylePG() {
 
 // clear form
 $.clearInput = function () {
-	$('#gen_id').val('');
+//	$('#gen_id').val('');
 	$('#cou_id').val('');
 	//$('#').select2('data', null);
 	$('#description').val('');
