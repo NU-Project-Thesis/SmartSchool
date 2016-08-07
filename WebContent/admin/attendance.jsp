@@ -13,8 +13,12 @@ iframe {
 	height: 500px !important;
 }
 select>option:empty { display:none }
-.select2-container.form-control {
-     height: auto !important;
+/* .select2-container.form-control {
+   overflow-y:auto;
+} */
+.select2-selection--multiple{
+    overflow: hidden !important;
+    height: auto !important;
 }
 
 </style>
@@ -75,7 +79,7 @@ select>option:empty { display:none }
 											</div>
 										</div>
 
-										<div class="col-md-3">
+									<!-- 	<div class="col-md-3">
 											<div class="form-group required">
 												<label class="control-label">Generation</label>
 												 <select
@@ -96,7 +100,7 @@ select>option:empty { display:none }
 														value="{{c.cou_id}}">{{c.cou_name}}</option>
 												</select>
 											</div>
-										</div>
+										</div> -->
 										
 										<!-- class -->
 											<div class="col-md-3">
@@ -124,10 +128,10 @@ select>option:empty { display:none }
 										</div>
 									</div>
 
-									<div class="form-group required" id="stuSelect" >
+									<!-- <div class="form-group required" id="stuSelect"  style=""> -->
 										<label class="control-label">Student</label> 
-										 <select id="stu_id" class="form-control select2" multiple="multiple"
-											data-placeholder="Select students" ng-model="studentFilter">
+										 <select id="stu_id" class="form-control select2" multiple="multiple" 
+											data-placeholder="Select students" ng-model="studentFilter" style="min-height:300px" ng-disabled="!classFilter.length">
 											<option ng-repeat="stu in filtered = (students|filter:{class_id:classFilter}| orderBy:first_name)"
 												value="{{stu.stu_id}}">{{stu.first_name}}
 												{{stu.last_name}}</option>
@@ -138,11 +142,11 @@ select>option:empty { display:none }
                         						   {{stu.first_name}}{{stu.last_name}}
                       							  </label>
                   						  </div> -->
-									</div>
+									<!-- </div> -->
 
 									<div class="form-group">
 										<label class="control-label">Description</label>
-										<select class="form-control" id="description">
+										<select class="form-control" id="description" >
 											<option value="Permission">Permission</option>
 											<option value="No Permission">No Permission</option>
 											<option value="Late">Late</option>
