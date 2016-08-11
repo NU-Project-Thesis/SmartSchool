@@ -131,7 +131,7 @@ FROM
 			<image>
 				<reportElement x="674" y="75" width="100" height="102" uuid="a4028306-1e37-4fff-9178-c5461802fcea"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
-     new com.google.zxing.qrcode.QRCodeWriter().encode("http://localhost:8080/smart_school_final/StudentCertificate.pdf?id="+$P{stuId}+"&cou_id="+$P{cou_id},
+     new com.google.zxing.qrcode.QRCodeWriter().encode("http://192.168.43.153:8080/smart_school_final/StudentCertificate.pdf?id="+$P{stuId}+"&cou_id="+$P{cou_id},
          com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 		</band>
