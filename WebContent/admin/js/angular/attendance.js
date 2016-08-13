@@ -96,6 +96,10 @@ app
 								function(data){
 									console.log(data);
 									$scope.activeClass=data;
+									
+									
+									
+									
 								}
 						);
 						// classfiltered
@@ -109,12 +113,29 @@ app
 						$http.get('listStudentEnroll.hrd').success(function(data) {
 							console.log(data);
 							$scope.students = data;
+							$scope.currentPage = 1; // current page
+							$scope.entryLimit = 5; // max no of items to display in
+													// a page
+							$scope.filteredItems = $scope.students.length; // Initially
+																		// for no
+																		// filter
+							$scope.totalItems = $scope.students.length;
+							$scope.edit = true;
+							$scope.error = false;
+							$scope.incomplete = false;
+							$scope.editid = 0;
+							// re-style the pagination
+							restylePG();
+							
 						
 						});
 					};
 					
 					$scope.$watch('classFilter', function(o, n){
 						console.log($scope.classFilter)
+						
+						
+						
 					});
 
 					/* set page for pagination */
@@ -175,18 +196,28 @@ app
 							$('#description').val($scope.list[x].description);
 						}
 					};
-
+					//var favorite = [];
+			
+						 
+//				            $.each($("input[name='sport']:checked"), function(){            
+//				                favorite.push($(this).val());
+//				 
+				           
 					
+				
 					$scope.save = function(e) {
+				
 						$("#spinner").show();
+						
 						var data = {
 							'att_id' : $scope.editid,
 							'att_date' : $('#att_date').val(),
-							'stu_id' : $('#stu_id').val().toString(),
+							'stu_id' :$('input:checkbox[name=checkme]').val(),
 							'shift' : $('input[name=shift]:checked').val(),
 							'description' : $('#description').val()
 						};
 						if (e == true) { // insert gen
+							console.log($('.stu_id').val());
 							$
 									.post("insertAtten.hrd", data)
 									.success(

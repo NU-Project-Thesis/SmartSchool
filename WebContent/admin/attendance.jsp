@@ -55,6 +55,7 @@ select>option:empty { display:none }
 				<button type="button" class="btn btn-info btn-lg" id="openmodal"
 					data-toggle="modal" style="display: none;" data-target="#myModal">Open
 					Modal</button>
+				
 
 				<!-- Modal -->
 				<div id="myModal" class="modal fade" role="dialog">
@@ -62,6 +63,7 @@ select>option:empty { display:none }
 
 						<!-- Modal content-->
 						<div class="modal-content">
+						
 							<div class="modal-header">
 								<button id="close" type="button" class="close"
 									data-dismiss="modal">&times;</button>
@@ -129,13 +131,115 @@ select>option:empty { display:none }
 									</div>
 
 									<!-- <div class="form-group required" id="stuSelect"  style=""> -->
-										<label class="control-label">Student</label> 
-										 <select id="stu_id" class="form-control select2" multiple="multiple" 
+										 <!-- <select id="stu_id" class="form-control select2" multiple="multiple" 
 											data-placeholder="Select students" ng-model="studentFilter" style="min-height:300px" ng-disabled="!classFilter.length">
 											<option ng-repeat="stu in filtered = (students|filter:{class_id:classFilter}| orderBy:first_name)"
 												value="{{stu.stu_id}}">{{stu.first_name}}
 												{{stu.last_name}}</option>
-										</select> 
+										</select>  -->
+										<div class="box box-success">
+							<div class="box-header ui-sortable-handle" style="cursor: move;">
+								<!-- pagination -->
+								<div class="box-tools pull-right">
+									<div class="" ng-show="filteredItems > 0">
+										<div pagination="" page="currentPage" max-size="3"
+											on-select-page="setPage(page)" boundary-links="true"
+											total-items="filteredItems" items-per-page="entryLimit"
+											class="pagination-small" previous-text="«" next-text="»"></div>
+									</div>
+								</div>
+								<!-- search -->
+								<div class="form-inline">
+									<!-- show -->
+
+									<!-- limit entry -->
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<span class="glyphicon glyphicon-th-list"></span>
+											</div>
+											<select id="entryLimit" class="form-control"
+												ng-model="entryLimit">
+												<option>5</option>
+												<option>10</option>
+												<option>15</option>
+												<option>20</option>
+											</select>
+										</div>
+										<!-- /.input group -->
+									</div>
+
+									<!-- search -->
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<span class="glyphicon glyphicon-search"></span>
+											</div>
+											<input type="text" class="form-control" name="search"
+												id="search" ng-model="search.$" ng-change="filter()"
+												placeholder="Search student...">
+										</div>
+										<!-- /.input group -->
+									</div>
+
+								<!-- 	<div class="btn-group">
+										<button type="button" id="import" class="btn btn-success" style="display: none;">Import</button>
+										<input type="file" id="fileImport" style="display: none;" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+										<button type="button" id="export" class="btn btn-danger" onclick="exportStudent()">Export</button>
+									</div> -->
+								</div>
+								<!-- end search -->
+
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body table-responsive">
+								<table class="table no-margin" ng-hide="!classFilter.length">
+									<thead>
+										<tr>
+											<th class="center">Student ID&nbsp;<a
+												ng-click="sort_by('stu_id');"><i
+													class="glyphicon glyphicon-sort"></i></a></th>
+											<th class="center">Name&nbsp;<a
+												ng-click="sort_by('first_name');"><i
+													class="glyphicon glyphicon-sort"></i></a></th>
+											<th class="center">Check&nbsp;<a
+												ng-click="sort_by('status');"><i
+													class="glyphicon glyphicon-sort"></i></a></th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr
+											ng-repeat="stu in filtered = (students|filter:{class_id:classFilter}| orderBy:first_name)|startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+											<td>{{stu.stu_id}}</td>
+
+										
+											<td><span ng-show="data.status!='drop'"><a
+													href="#" 
+													data-toggle="modal" id="editable-sample_new"
+													title="Click to update" data-original-title="Update">{{
+														stu.first_name }} {{ stu.last_name }}</a></span> <span
+												ng-show="data.status=='drop'">{{stu.first_name }} {{
+													stu.last_name }}</span></td>
+											<td>
+												<div class="center">
+													<!-- <button class="btn btn-success"
+														ng-click="changeState(data.stu_id, data.status, data.first_name, data.last_name)"
+														ng-show="data.status!='drop'"
+														title="Click to change student to drop!">
+														<i class="fa fa-check-circle"></i>
+													</button> -->
+											<!-- 	<input name="attcheck" type="checkbox" value="{{stu.stu_id}} class="mycheck"/> -->
+												<input type="checkbox" value="{{stu.stu_id}}" name="checkme"></input>
+													
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							</div>
+							
 										<!--  <div class="checkbox checkbox-circle" ng-repeat="stu in filtered = (student | filter:{gen_id:genFilter} | filter:{cou_id:courseFilter} | orderBy:first_name)">
                        						 <input id="checkbox7" class="styled" type="checkbox">
                        							 <label for="checkbox7" value="{{stu.stu_id}}">
@@ -159,7 +263,7 @@ select>option:empty { display:none }
 									data-dismiss="modal">Close</button> -->
 								<div class="btn-group pull-right">
 									<button type="button" class="btn btn-success" id="addAtten"
-										ng-click="save(edit)">Save</button>
+									 	ng-disable="!classFilter.length" ng-click="save(edit)">Save</button>
 									<button type="button" class="btn btn-danger" id="btncancel"
 										data-dismiss="modal">Cancel</button>
 								</div>
@@ -306,8 +410,12 @@ select>option:empty { display:none }
 		$(document)
 				.ready(
 						function() {
-							
-							  $("#stu_id").css("height", parseInt($("#stu_id option").length) * 20);
+						
+							$('input[name="attcheck"]:checked').each(function() {
+								   alert(this.value); 
+							});
+		           
+					  $("#stu_id").css("height", parseInt($("#stu_id option").length) * 20);
 							
 							//set active gen selected
 						//$('#activeGen').attr('selected',"seleccted");
@@ -497,7 +605,7 @@ select>option:empty { display:none }
 							
 								$(".iradio_flat-green").removeClass("checked");
 								//$("#stu_id").val('').end();
-								$("#stu_id").select2("val", "");
+							//	$("#stu_id").select2("val", "");
 							//  $(this).removeData('bs.modal');
 							
 						
