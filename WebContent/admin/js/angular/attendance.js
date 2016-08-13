@@ -212,7 +212,7 @@ app
 						    return this.value;
 						}).get();
 						var a = checkedValues;
-						alert(a);
+						//alert(a);
 						var data = {
 								
 							'att_id' : $scope.editid,

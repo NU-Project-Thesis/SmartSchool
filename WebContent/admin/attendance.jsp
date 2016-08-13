@@ -412,7 +412,7 @@ select>option:empty { display:none }
 						function() {
 						
 							$('input[name="attcheck"]:checked').each(function() {
-								   alert(this.value); 
+								  // alert(this.value); 
 							});
 		           
 					  $("#stu_id").css("height", parseInt($("#stu_id option").length) * 20);
