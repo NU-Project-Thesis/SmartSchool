@@ -203,16 +203,21 @@ app
 //				                favorite.push($(this).val());
 //				 
 				           
-					
+				;
 				
 					$scope.save = function(e) {
 				
 						$("#spinner").show();
-						
+						var checkedValues = $('input[name=checkme]:checked').map(function() {
+						    return this.value;
+						}).get();
+						var a = checkedValues;
+						alert(a);
 						var data = {
+								
 							'att_id' : $scope.editid,
 							'att_date' : $('#att_date').val(),
-							'stu_id' :$('input:checkbox[name=checkme]').val(),
+							'stu_id' :a.toString(),
 							'shift' : $('input[name=shift]:checked').val(),
 							'description' : $('#description').val()
 						};

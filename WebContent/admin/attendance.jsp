@@ -230,7 +230,7 @@ select>option:empty { display:none }
 														<i class="fa fa-check-circle"></i>
 													</button> -->
 											<!-- 	<input name="attcheck" type="checkbox" value="{{stu.stu_id}} class="mycheck"/> -->
-												<input type="checkbox" value="{{stu.stu_id}}" name="checkme"></input>
+												<input type="checkbox" value="{{stu.stu_id}}" name="checkme" class="mycheck"></input>
 													
 												</div>
 											</td>
