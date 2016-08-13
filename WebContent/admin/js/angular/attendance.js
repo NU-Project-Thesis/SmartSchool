@@ -343,5 +343,6 @@ $.clearInput = function () {
 	$('#cou_id').val('');
 	//$('#').select2('data', null);
 	$('#description').val('');
+	$("#checkall").removeAttr("checked");
 };
 

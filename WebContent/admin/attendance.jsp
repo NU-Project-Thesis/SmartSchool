@@ -155,9 +155,7 @@ select>option:empty { display:none }
 									<!-- limit entry -->
 									<div class="form-group">
 										<div class="input-group">
-											<div class="input-group-addon">
-												<span class="glyphicon glyphicon-th-list"></span>
-											</div>
+											
 											<select id="entryLimit" class="form-control"
 												ng-model="entryLimit">
 												<option>5</option>
@@ -165,6 +163,7 @@ select>option:empty { display:none }
 												<option>15</option>
 												<option>20</option>
 											</select>
+											
 										</div>
 										<!-- /.input group -->
 									</div>
@@ -179,6 +178,8 @@ select>option:empty { display:none }
 												id="search" ng-model="search.$" ng-change="filter()"
 												placeholder="Search student...">
 										</div>
+										CheckAll<input type="checkbox" id="checkall"/>
+										
 										<!-- /.input group -->
 									</div>
 
@@ -410,6 +411,12 @@ select>option:empty { display:none }
 		$(document)
 				.ready(
 						function() {
+							$("#checkall").change(function(){  //"select all" change 
+							    var status = this.checked; // "select all" checked status
+							    $('.mycheck').each(function(){ //iterate all listed checkbox items
+							        this.checked = status; //change ".checkbox" checked status
+							    });
+							});
 						
 							$('input[name="attcheck"]:checked').each(function() {
 								  // alert(this.value); 
